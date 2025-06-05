@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math_125 v3</title> <!-- Changed Title Here -->
+    <title>Math_125 v3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
@@ -11,7 +11,7 @@
         @import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
 
         :root {
-            /* Cool Blue "Hacker" Vibes */
+            /* Cool Blue "Hacker" Vibes - Default Bright Mode */
             --terminal-bg: #0A0F1E; /* Deep Dark Blue */
             --terminal-text: #30C8FF; /* Bright Blue */
             --terminal-accent: #80FFFF; /* Lighter Cyan/Aqua */
@@ -21,7 +21,8 @@
             --item-bg: rgba(20, 40, 70, 0.3);
             --item-border: #25A0CC;
             --item-hover-bg: rgba(30, 60, 100, 0.5);
-            /* Section colors */
+            
+            /* Section colors for bright mode */
             --section-color-1: #FF6B6B; /* Coral */
             --section-color-2: #42E2B8; /* Teal */
             --section-color-3: #BD93F9; /* Purple */
@@ -29,6 +30,32 @@
             --section-color-5: #FF79C6; /* Pink */
             --section-color-6: #FFB86C; /* Orange */
             --section-color-7: #F1FA8C; /* Yellow */
+
+            /* Universal muted tab/button colors (defined here for potential direct use if needed) */
+            --universal-muted-tab-bg: #4A5568; /* Tailwind gray-600: Faint grey-blue */
+            --universal-muted-tab-text: #E2E8F0; /* Tailwind slate-200: Light text */
+        }
+
+        /* Styles for Muted Color Mode */
+        body.muted-colors-active {
+            --terminal-bg: #1A202C; /* Darker Slate Gray */
+            --terminal-text: #A0AEC0; /* Medium Gray */
+            --terminal-accent: #63B3ED; /* Softer Blue */
+            --terminal-dim-text: #718096; /* Lighter Gray */
+            --border-color: #4A5568; /* Gray */
+            --glow-color: rgba(99, 179, 237, 0.2); /* Softer Blue Glow */
+            --item-bg: rgba(45, 55, 72, 0.4); /* Darker Slate Gray, slightly transparent */
+            --item-border: #4A5568; /* Gray */
+            --item-hover-bg: rgba(74, 85, 104, 0.6); /* Gray, slightly transparent */
+
+            /* Override all section colors to use the universal muted tab background */
+            --section-color-1: var(--universal-muted-tab-bg);
+            --section-color-2: var(--universal-muted-tab-bg);
+            --section-color-3: var(--universal-muted-tab-bg);
+            --section-color-4: var(--universal-muted-tab-bg);
+            --section-color-5: var(--universal-muted-tab-bg);
+            --section-color-6: var(--universal-muted-tab-bg);
+            --section-color-7: var(--universal-muted-tab-bg);
         }
 
         body {
@@ -42,6 +69,7 @@
             min-height: 100vh;
             overflow-x: hidden;
             text-shadow: 0 0 5px var(--glow-color);
+            transition: background-color 0.3s, color 0.3s; /* Smooth transition for theme change */
         }
 
         body::after {
@@ -54,7 +82,12 @@
             background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 3px);
             pointer-events: none;
             z-index: 9999;
+            transition: background 0.3s;
         }
+        body.muted-colors-active::after {
+            background: repeating-linear-gradient(0deg, rgba(100,110,130,0.05), rgba(100,110,130,0.05) 1px, transparent 1px, transparent 3px);
+        }
+
 
         .container {
             width: 95%;
@@ -63,11 +96,16 @@
             padding: 1rem;
             border: 1px solid var(--border-color);
             box-shadow: 0 0 15px var(--glow-color);
-            background-color: rgba(10, 20, 30, 0.5); /* Adjusted for blue theme */
+            background-color: rgba(10, 20, 30, 0.5);
             flex-grow: 1;
             display: flex;
             flex-direction: column;
+            transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
         }
+        body.muted-colors-active .container {
+            background-color: rgba(26, 32, 44, 0.7); /* Muted --terminal-bg with alpha */
+        }
+
 
         header {
             border-bottom: 1px solid var(--border-color);
@@ -77,6 +115,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            transition: border-color 0.3s;
         }
 
         header h1 {
@@ -97,7 +136,7 @@
             transition: all 0.3s ease;
             text-shadow: 0 0 3px var(--terminal-accent);
             margin-top: 0.5rem;
-            margin-left: 0.5rem; /* Added margin for new button */
+            margin-left: 0.5rem;
         }
 
         .terminal-nav button:hover {
@@ -106,12 +145,31 @@
             box-shadow: 0 0 10px var(--terminal-accent);
         }
         
+        /* Muted styles for terminal navigation buttons */
+        body.muted-colors-active .terminal-nav button {
+            background-color: var(--universal-muted-tab-bg); /* Faint grey-blue */
+            color: var(--universal-muted-tab-text); /* Light text */
+            border: 1px solid var(--terminal-accent); /* Muted accent for border */
+            text-shadow: 0 0 3px var(--glow-color); /* Muted glow */
+        }
+
+        body.muted-colors-active .terminal-nav button:hover {
+            background-color: var(--terminal-accent); /* Muted accent */
+            color: var(--terminal-bg); /* Muted background as text color */
+            box-shadow: 0 0 10px var(--terminal-accent); /* Muted accent */
+        }
+
         .path-display {
             font-size: 0.9rem;
             color: var(--terminal-dim-text);
             margin-top: 0.5rem;
             word-break: break-all;
+            transition: color 0.3s;
         }
+        body.muted-colors-active .path-display {
+            color: var(--terminal-dim-text); /* Will use muted --terminal-dim-text */
+        }
+
 
         .main-content {
             display: flex;
@@ -133,6 +191,7 @@
             display: flex; 
             justify-content: center;
             align-items: center;
+            transition: border-color 0.3s;
         }
 
         .carousel {
@@ -157,7 +216,7 @@
             align-items: center;
             text-align: center;
             cursor: pointer;
-            transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease;
+            transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease, background-color 0.3s, border-color 0.3s, color 0.3s;
             padding: 15px;
             color: var(--terminal-text);
             font-size: 1.1rem;
@@ -179,47 +238,74 @@
         
         .carousel-item.active {
             border-color: var(--terminal-accent);
-            box-shadow: 0 0 25px var(--terminal-accent), 0 0 10px #E0E0E0; /* Lighter glow for active */
+            box-shadow: 0 0 25px var(--terminal-accent), 0 0 10px #E0E0E0; 
             z-index: 10; 
         }
+        body.muted-colors-active .carousel-item.active {
+             box-shadow: 0 0 25px var(--terminal-accent), 0 0 10px var(--terminal-dim-text); /* Muted active glow */
+        }
 
-        /* New styles for the grade button */
+
         .grade-button {
-            background-color: var(--terminal-accent); /* Default ungraded color */
+            background-color: var(--terminal-accent); 
             color: var(--terminal-bg);
             border: none;
             padding: 8px 12px;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.3s;
             text-shadow: none;
             box-shadow: 0 0 5px var(--terminal-accent);
-            border-radius: 3px; /* Added for consistency */
+            border-radius: 3px;
         }
 
         .grade-button:hover {
-            background-color: #80FFFF80; /* Lighter accent on hover */
+            background-color: #80FFFF80; 
             transform: scale(1.05);
         }
 
-        /* Graded state specific styling */
         .grade-button.is-graded {
-            background-color: var(--section-color-4); /* Bright Green for graded */
+            background-color: var(--section-color-4); 
             color: var(--terminal-bg);
-            box-shadow: 0 0 10px var(--section-color-4), 0 0 20px rgba(80, 250, 123, 0.5); /* Green glow */
+            box-shadow: 0 0 10px var(--section-color-4), 0 0 20px rgba(80, 250, 123, 0.5); 
         }
 
         .grade-button.is-graded:hover {
             background-color: rgba(80, 250, 123, 0.8);
             transform: scale(1.05);
         }
+        
+        /* Muted Grade Button Styles */
+        body.muted-colors-active .grade-button {
+            background-color: var(--universal-muted-tab-bg); /* Faint grey-blue */
+            color: var(--universal-muted-tab-text); /* Light text */
+            box-shadow: 0 0 5px var(--terminal-accent); /* Muted accent glow */
+        }
+        body.muted-colors-active .grade-button:hover {
+            background-color: var(--terminal-accent); /* Muted accent on hover */
+            color: var(--terminal-bg); /* Muted bg for text */
+        }
+        body.muted-colors-active .grade-button.is-graded {
+            background-color: #2F855A; /* A more muted green, e.g., Tailwind green-700 */
+            color: #E2E8F0; /* Light text */
+            box-shadow: 0 0 10px #2F855A80; /* Muted green glow */
+        }
+        body.muted-colors-active .grade-button.is-graded:hover {
+            background-color: #38A169; /* Slightly lighter muted green, e.g., Tailwind green-600 */
+        }
 
-        /* Animation for click */
+
         @keyframes gradedPulse {
             0% { transform: scale(1); box-shadow: 0 0 10px var(--section-color-4), 0 0 0 rgba(80, 250, 123, 0); }
             50% { transform: scale(1.02); box-shadow: 0 0 20px var(--section-color-4), 0 0 15px rgba(80, 250, 123, 0.7); }
             100% { transform: scale(1); box-shadow: 0 0 10px var(--section-color-4), 0 0 0 rgba(80, 250, 123, 0); }
         }
+        body.muted-colors-active @keyframes gradedPulse { /*This might not work as intended due to CSS variable scope in keyframes*/
+            0% { transform: scale(1); box-shadow: 0 0 10px #2F855A, 0 0 0 rgba(47, 133, 90, 0); }
+            50% { transform: scale(1.02); box-shadow: 0 0 20px #2F855A, 0 0 15px rgba(47, 133, 90, 0.7); }
+            100% { transform: scale(1); box-shadow: 0 0 10px #2F855A, 0 0 0 rgba(47, 133, 90, 0); }
+        }
+
 
         .grade-button.animating {
             animation: gradedPulse 0.6s ease-out;
@@ -229,10 +315,15 @@
             flex-grow: 1;
             border: 1px solid var(--border-color);
             padding: 20px;
-            background-color: rgba(10, 20, 30, 0.7); /* Adjusted for blue theme */
+            background-color: rgba(10, 20, 30, 0.7);
             overflow-y: auto;
             max-height: 60vh; 
+            transition: border-color 0.3s, background-color 0.3s;
         }
+        body.muted-colors-active .assignment-content-container {
+            background-color: rgba(26, 32, 44, 0.8); /* Muted --terminal-bg with alpha */
+        }
+
 
         #assignment-content h2 {
             font-family: 'VT323', monospace;
@@ -241,6 +332,10 @@
             border-bottom: 1px solid var(--terminal-dim-text);
             padding-bottom: 0.5rem;
             margin-bottom: 1rem;
+            transition: color 0.3s, border-color 0.3s;
+        }
+        body.muted-colors-active #assignment-content .pdf-placeholder {
+             color: var(--terminal-dim-text); /* Muted dim text */
         }
         
         .collapsible-section {
@@ -248,6 +343,7 @@
             border: 1px solid var(--terminal-dim-text);
             border-radius: 5px;
             overflow: hidden;
+            transition: border-color 0.3s;
         }
 
         .collapsible-header { 
@@ -258,18 +354,28 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background-color 0.3s;
-            color: var(--terminal-bg);  /* Text color on header background */
+            transition: background-color 0.3s, color 0.3s;
+            color: var(--terminal-bg); 
         }
         .collapsible-header::after { 
             content: '[+]';
             font-family: 'VT323', monospace;
             margin-left: 10px;
             font-size: 1.2em;
+            transition: color 0.3s;
         }
         .collapsible-section.open .collapsible-header::after {
             content: '[-]';
         }
+        
+        /* Ensure text color for all collapsible headers in muted mode is consistent */
+        body.muted-colors-active .collapsible-header {
+            color: var(--universal-muted-tab-text) !important; /* Important to override specific text colors */
+        }
+        body.muted-colors-active .collapsible-header::after {
+             color: var(--universal-muted-tab-text) !important;
+        }
+
 
         .collapsible-content {
             padding: 15px;
@@ -277,19 +383,26 @@
             border-top: 1px solid var(--terminal-dim-text);
             display: none;
             color: var(--terminal-text);
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
         }
+        body.muted-colors-active .collapsible-content {
+            background-color: rgba(26, 32, 44, 0.5); /* Muted bg, more transparent */
+        }
+
         .collapsible-section.open .collapsible-content {
             display: block;
         }
 
-        /* Color coding for section headers */
+        /* Color coding for section headers (Bright Mode) */
         .collapsible-section.color-1 .collapsible-header { background-color: var(--section-color-1); }
         .collapsible-section.color-2 .collapsible-header { background-color: var(--section-color-2); }
-        .collapsible-section.color-3 .collapsible-header { background-color: var(--section-color-3); color: #111; } /* Darker text for yellow */
+        .collapsible-section.color-3 .collapsible-header { background-color: var(--section-color-3); color: #111; }
         .collapsible-section.color-4 .collapsible-header { background-color: var(--section-color-4); }
         .collapsible-section.color-5 .collapsible-header { background-color: var(--section-color-5); }
-        .collapsible-section.color-6 .collapsible-header { background-color: var(--section-color-6); color: #111; } /* Darker text for orange */
-        .collapsible-section.color-7 .collapsible-header { background-color: var(--section-color-7); color: #111; } /* Darker text for light blue */
+        .collapsible-section.color-6 .collapsible-header { background-color: var(--section-color-6); color: #111; }
+        .collapsible-section.color-7 .collapsible-header { background-color: var(--section-color-7); color: #111; }
+        /* In muted mode, the --section-color-X vars are already changed to --universal-muted-tab-bg */
+        /* And the text color is globally set by: body.muted-colors-active .collapsible-header { color: var(--universal-muted-tab-text) !important; } */
 
 
         .assignment-document p, .assignment-document li {
@@ -299,6 +412,7 @@
         .assignment-document strong { 
             color: var(--terminal-accent); 
             font-weight: normal; 
+            transition: color 0.3s;
         }
         .assignment-document .solution > p:first-child > strong {
              color: var(--terminal-text);
@@ -307,6 +421,7 @@
             padding-left: 1rem;
             border-left: 2px solid var(--terminal-dim-text);
             margin-top: 0.5rem;
+            transition: border-color 0.3s;
         }
         .graph-container {
             width: 100%;
@@ -317,25 +432,40 @@
             background-color: rgba(0,0,0, 0.5); 
             border: 1px solid var(--terminal-dim-text);
             border-radius: 4px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        body.muted-colors-active .graph-container {
+            background-color: rgba(26, 32, 44, 0.6); /* Muted bg */
         }
         .graph-container canvas {
-            background-color: rgba(5, 10, 15, 0.9); /* Darker blue canvas BG */
+            background-color: rgba(5, 10, 15, 0.9); 
             border-radius: 4px;
+            transition: background-color 0.3s;
         }
+         body.muted-colors-active .graph-container canvas {
+            background-color: rgba(26, 32, 44, 0.9); /* Darker canvas BG for muted mode */
+        }
+
         .data-anomaly-block {
-            border: 2px dashed var(--section-color-1); 
+            border: 2px dashed var(--section-color-1); /* Will use muted section color */
             padding: 15px;
             margin: 15px 0;
             background-color: rgba(255, 107, 107, 0.05); 
-            color: var(--section-color-1); 
+            color: var(--section-color-1) !important;  /* Ensure text also uses the (muted) section color */
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
         }
+        body.muted-colors-active .data-anomaly-block {
+            background-color: rgba(74, 85, 104, 0.1); /* Muted, subtle bg */
+        }
+
         .data-anomaly-block .anomaly-title {
             font-family: 'VT323', monospace;
             font-size: 1.4em; 
             display: block;
             text-align: center;
             margin-bottom: 10px;
-            text-shadow: 0 0 5px var(--section-color-1);
+            text-shadow: 0 0 5px var(--section-color-1); /* Will use muted section color */
+             transition: text-shadow 0.3s;
         }
         .data-anomaly-block p {
             color: var(--section-color-1) !important; 
@@ -347,6 +477,10 @@
             padding: 2px 4px;
             border-radius: 3px;
             font-family: 'Share Tech Mono', monospace;
+            transition: background-color 0.3s;
+        }
+        body.muted-colors-active .data-anomaly-block code {
+             background-color: rgba(0,0,0,0.5); /* Darker code block in muted */
         }
 
 
@@ -362,11 +496,10 @@
             box-shadow: 0 0 10px var(--terminal-accent);
             z-index: 10000;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.5s ease-in-out, background-color 0.3s, color 0.3s, box-shadow 0.3s;
             font-size: 0.9rem;
             text-shadow: none;
         }
-
         .message-area.visible {
             opacity: 1;
         }
@@ -377,7 +510,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--terminal-bg);
+            background-color: var(--terminal-bg); /* Adapts with theme */
             z-index: 10001;
             display: flex;
             align-items: center;
@@ -385,7 +518,7 @@
             flex-direction: column;
             padding: 20px;
             box-sizing: border-box;
-            transition: opacity 0.25s ease-in-out; /* Faster fade-out for boot sequence */
+            transition: opacity 0.25s ease-in-out, background-color 0.3s;
         }
 
         #boot-text {
@@ -394,16 +527,19 @@
             white-space: pre-wrap;
             text-align: left;
             max-width: 800px;
+            color: var(--terminal-text); /* Adapts with theme */
+            transition: color 0.3s;
         }
 
         .typed-cursor {
             display: inline-block;
             width: 0.6em;
             height: 1.2em;
-            background-color: var(--terminal-text);
+            background-color: var(--terminal-text); /* Adapts with theme */
             animation: blink 0.7s infinite;
             margin-left: 2px;
             vertical-align: bottom;
+            transition: background-color 0.3s;
         }
 
         @keyframes blink {
@@ -424,7 +560,7 @@
         }
 
         .carousel-nav button {
-            background: rgba(48, 200, 255, 0.2); /* Adjusted for blue theme */
+            background: rgba(48, 200, 255, 0.2);
             border: 1px solid var(--terminal-accent);
             color: var(--terminal-accent);
             font-size: 1.5rem;
@@ -433,13 +569,25 @@
             z-index: 20; 
             pointer-events: all; 
             opacity: 0.7;
-            transition: opacity 0.3s, background-color 0.3s;
+            transition: opacity 0.3s, background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         .carousel-nav button:hover {
             opacity: 1;
-            background: rgba(48, 200, 255, 0.4); /* Adjusted for blue theme */
+            background: rgba(48, 200, 255, 0.4);
         }
+        /* Muted styles for carousel navigation buttons */
+        body.muted-colors-active .carousel-nav button {
+            background-color: var(--universal-muted-tab-bg); /* Faint grey-blue */
+            color: var(--universal-muted-tab-text); /* Light text */
+            border: 1px solid var(--terminal-accent); /* Muted accent for border */
+        }
+
+        body.muted-colors-active .carousel-nav button:hover {
+            background-color: var(--terminal-accent); /* Muted accent */
+            color: var(--terminal-bg); /* Muted background as text color */
+        }
+
         
         @media (max-width: 768px) {
             header h1 { font-size: 1.8rem; }
@@ -460,11 +608,12 @@
         @media (max-width: 480px) {
             header { flex-direction: column; align-items: flex-start; }
             header h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-            .terminal-nav { width: 100%; display: flex; justify-content: space-between; }
+            .terminal-nav { width: 100%; display: flex; flex-wrap: wrap; justify-content: flex-start; } /* Adjusted for more buttons */
+             .terminal-nav button { margin-right: 0.5rem; } /* Space between buttons */
             .carousel-container { height: 180px; } 
             .carousel-item { width: 150px; height: 100px; }
             .carousel-item h3 { font-size: 0.9rem; }
-            .grade-button { padding: 6px 10px; font-size: 0.8rem; } /* Adjusted for mobile */
+            .grade-button { padding: 6px 10px; font-size: 0.8rem; }
             .graph-container { height: 250px; }
         }
 
@@ -477,11 +626,11 @@
 
     <div class="container" style="display:none;">
         <header>
-            <h1>Math_125 v3</h1> <!-- Changed Header Text Here -->
+            <h1>Math_125 v3</h1>
             <div class="terminal-nav">
                 <button id="homeButton">C:\&gt; ROOT_DIR</button>
-                <!-- New button for expanding/collapsing all tabs -->
                 <button id="toggleAllTabsButton">C:\&gt; TOGGLE_TABS</button> 
+                <button id="muteColorsButton">C:\&gt; MUTE_COLORS</button> <!-- Mute Button Added -->
             </div>
         </header>
         <div class="path-display" id="pathDisplay">PATH: /assignments/</div>
@@ -508,7 +657,7 @@
     <div id="messageArea" class="message-area">Link copied to clipboard!</div>
 
     <script>
-        // --- ASSIGNMENT DATA (Content remains the same) ---
+        // --- ASSIGNMENT DATA (Content remains the same as previous version) ---
         const assignmentsData = [
             { 
                 id: "exam1",
@@ -858,7 +1007,7 @@
                                         <p>So, \\(\\frac{x^{-3}}{3y^{-1}} = \\frac{\\frac{1}{x^3}}{\\frac{3}{y}} = \\frac{1}{x^3} \\cdot \\frac{y}{3} = \\frac{y}{3x^3}\\)</p>
                                         <p>Now apply the outer exponent -2:</p>
                                         <p>\\((\\frac{y}{3x^3})^{-2}\\)</p>
-                                        <p>Using the rule \\((\frac{a}{b})^{-n} = (\\frac{b}{a})^n\\):</p>
+                                        <p>Using the rule \\((\\frac{a}{b})^{-n} = (\\frac{b}{a})^n\\):</p>
                                         <p>\\(= (\\frac{3x^3}{y})^2\\)</p>
                                         <p>Apply the power to numerator and denominator: \\(\\frac{(3x^3)^2}{y^2} = \\frac{3^2 (x^3)^2}{y^2} = \\frac{9x^{3 \\cdot 2}}{y^2} = \\frac{9x^6}{y^2}\\)</p>
                                         <p>Method 2: Distribute the outer exponent first.</p>
@@ -1756,7 +1905,9 @@
         const carousel = document.getElementById('assignmentCarousel');
         const assignmentContentDiv = document.getElementById('assignment-content');
         const homeButton = document.getElementById('homeButton');
-        const toggleAllTabsButton = document.getElementById('toggleAllTabsButton'); // Get the new button
+        const toggleAllTabsButton = document.getElementById('toggleAllTabsButton');
+        const muteColorsButton = document.getElementById('muteColorsButton'); // Mute button
+        const bodyElement = document.body; // Body element for class toggle
         const pathDisplay = document.getElementById('pathDisplay');
         const messageArea = document.getElementById('messageArea');
         const prevButton = document.getElementById('prevButton');
@@ -1766,23 +1917,22 @@
         const bootTextDiv = document.getElementById('boot-text');
         const containerDiv = document.querySelector('.container');
         const bootLines = [
-            "INIT TERMINAL_MATH XQ v2.3...", // Shortened
-            "SYS CHK: OK.", // Shortened
-            "MODULES: EX1,HW2,HW4-6,QZ4-6...", // Shortened
-            "SOLUTIONS_VERIFIED [SIGMA-7]", // More "tech"
-            "GFX_ENGINE::BLUE_SYNC [ACTIVE]", // Shortened
-            "ANOM_DETECT: ONLINE.", // Shortened
-            "OPERATOR_AUTH. SYSTEM READY.", // Shortened
+            "INIT TERMINAL_MATH XQ v2.3...",
+            "SYS CHK: OK.", 
+            "MODULES: EX1,HW2,HW4-6,QZ4-6...",
+            "SOLUTIONS_VERIFIED [SIGMA-7]", 
+            "GFX_ENGINE::BLUE_SYNC [ACTIVE]", 
+            "COLOR_PALETTE_MUTATOR::STANDBY", // New boot line
+            "ANOM_DETECT: ONLINE.",
+            "OPERATOR_AUTH. SYSTEM READY.",
         ];
         let lineIndex = 0;
         let charIndex = 0;
         let activeCharts = {}; 
-        let allTabsOpen = false; // Track the state of the tabs
+        let allTabsOpen = false; 
 
-        // Global state for graded assignments, loaded from localStorage
         let gradedAssignments = JSON.parse(localStorage.getItem('graded_assignments') || '{}');
 
-        // Function to update the grade button's visual state (text and class)
         function updateGradeButtonVisual(buttonElement, assignmentId) {
             const isGraded = gradedAssignments[assignmentId];
             if (isGraded) {
@@ -1799,25 +1949,65 @@
                 if (charIndex < bootLines[lineIndex].length) {
                     bootTextDiv.innerHTML += bootLines[lineIndex].charAt(charIndex);
                     charIndex++;
-                    setTimeout(typeBootText, 5); // Very fast character typing
+                    setTimeout(typeBootText, 5); 
                 } else {
                     bootTextDiv.innerHTML += '\n';
                     lineIndex++;
                     charIndex = 0;
-                    setTimeout(typeBootText, 20); // Short delay between lines
+                    setTimeout(typeBootText, 20); 
                 }
             } else {
-                // All lines typed, now proceed to fade out and show content
                 setTimeout(() => {
-                    bootSequenceDiv.style.opacity = 0; // Start fade out
+                    bootSequenceDiv.style.opacity = 0; 
                     setTimeout(() => {
-                        bootSequenceDiv.style.display = 'none'; // Hide after fade
-                        containerDiv.style.display = 'flex'; // Show main content
-                        checkUrlParams(); // Initialize carousel and content
-                    }, 250); // Duration of fade out (must match CSS transition)
-                }, 50); // Short delay after text is fully typed
+                        bootSequenceDiv.style.display = 'none'; 
+                        containerDiv.style.display = 'flex'; 
+                        checkUrlParams(); 
+                        applyMutedColorsPreference(); // Apply muted preference after content is shown
+                    }, 250); 
+                }, 50); 
             }
         }
+        
+        // Function to apply muted colors preference from localStorage
+        function applyMutedColorsPreference() {
+            const mutedEnabled = localStorage.getItem('mutedColorsEnabled') === 'true';
+            if (mutedEnabled) {
+                bodyElement.classList.add('muted-colors-active');
+                muteColorsButton.textContent = 'C:\\> BRIGHT_MODE';
+            } else {
+                bodyElement.classList.remove('muted-colors-active');
+                muteColorsButton.textContent = 'C:\\> MUTE_COLORS';
+            }
+            // Re-render charts if HW6 is active, after a short delay for styles to apply
+            setTimeout(() => {
+                const currentLoadedAssignment = currentAssignments[currentIndex];
+                if (currentLoadedAssignment && currentLoadedAssignment.id === "hw6" && containerDiv.style.display !== 'none') {
+                    destroyActiveCharts();
+                    renderHomework6Charts();
+                }
+            }, 100);
+        }
+
+        // Event listener for the mute colors button
+        muteColorsButton.addEventListener('click', () => {
+            const isMuted = bodyElement.classList.toggle('muted-colors-active');
+            localStorage.setItem('mutedColorsEnabled', isMuted);
+            if (isMuted) {
+                muteColorsButton.textContent = 'C:\\> BRIGHT_MODE';
+            } else {
+                muteColorsButton.textContent = 'C:\\> MUTE_COLORS';
+            }
+            // Re-render charts after theme change, after a short delay
+             setTimeout(() => {
+                const currentLoadedAssignment = currentAssignments[currentIndex];
+                if (currentLoadedAssignment && currentLoadedAssignment.id === "hw6" && containerDiv.style.display !== 'none') {
+                    destroyActiveCharts();
+                    renderHomework6Charts();
+                }
+            }, 100);
+        });
+
 
         function renderCarousel() {
             carousel.innerHTML = '';
@@ -1832,32 +2022,27 @@
                 titleElement.textContent = assignment.title; 
                 item.appendChild(titleElement);
 
-                // --- Replaced Share Button with Grade Button ---
                 const gradeButton = document.createElement('button');
                 gradeButton.classList.add('grade-button');
-                gradeButton.dataset.assignmentId = assignment.id; // Store ID on button
-                updateGradeButtonVisual(gradeButton, assignment.id); // Set initial state based on localStorage
+                gradeButton.dataset.assignmentId = assignment.id; 
+                updateGradeButtonVisual(gradeButton, assignment.id); 
                 gradeButton.onclick = (e) => {
-                    e.stopPropagation(); // Prevent carousel item click from firing
+                    e.stopPropagation(); 
                     const currentAssignmentId = e.currentTarget.dataset.assignmentId;
                     
-                    // Toggle graded status
                     const isCurrentlyGraded = !!gradedAssignments[currentAssignmentId];
                     gradedAssignments[currentAssignmentId] = !isCurrentlyGraded;
                     localStorage.setItem('graded_assignments', JSON.stringify(gradedAssignments));
                     
-                    // Update button visual
                     updateGradeButtonVisual(e.currentTarget, currentAssignmentId);
                     
-                    // Trigger animation
-                    e.currentTarget.classList.remove('animating'); // Reset animation by removing class
-                    void e.currentTarget.offsetWidth; // Trigger reflow to restart animation
-                    e.currentTarget.classList.add('animating'); // Add class to start animation
+                    e.currentTarget.classList.remove('animating'); 
+                    void e.currentTarget.offsetWidth; 
+                    e.currentTarget.classList.add('animating'); 
 
                     showTemporaryMessage(`STATUS: ${assignment.title} -> ${gradedAssignments[currentAssignmentId] ? 'GRADED' : 'UNGRADED'}!`);
                 };
                 item.appendChild(gradeButton);
-                // --- End Replaced Button ---
 
                 item.addEventListener('click', () => {
                     currentIndex = index;
@@ -1867,32 +2052,16 @@
                 carousel.appendChild(item);
             });
             updateCarousel();
-            if (currentAssignments.length > 0) {
+            if (currentAssignments.length > 0 && currentAssignments[currentIndex]) { // Check if currentIndex is valid
                  loadAssignmentContent(currentAssignments[currentIndex].id);
+            } else if (currentAssignments.length > 0) { // Fallback to first item if currentIndex is out of bounds
+                 currentIndex = 0;
+                 loadAssignmentContent(currentAssignments[0].id);
             } else {
                  loadAssignmentContent(null); 
             }
         }
         
-        // This fallback function is no longer strictly needed but kept as a general utility if clipboard API fails
-        function fallbackCopyTextToClipboard(text, title) {
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            textArea.style.position = "fixed"; textArea.style.top = "0"; textArea.style.left = "0";
-            textArea.style.width = "2em"; textArea.style.height = "2em"; textArea.style.padding = "0";
-            textArea.style.border = "none"; textArea.style.outline = "none"; textArea.style.boxShadow = "none";
-            textArea.style.background = "transparent";
-            document.body.appendChild(textArea);
-            textArea.focus(); textArea.select();
-            try {
-                document.execCommand('copy');
-                showTemporaryMessage(`LINK FOR ${title} COPIED! (fallback)`);
-            } catch (err) {
-                showTemporaryMessage('FAILED TO COPY LINK.');
-                console.error('Fallback copy failed', err);
-            }
-            document.body.removeChild(textArea);
-        }
 
         function updateCarousel() {
             const items = carousel.children;
@@ -1969,13 +2138,12 @@
                         } else {
                             content.style.display = "block";
                         }
-                        // Reset allTabsOpen state when a single tab is clicked
-                        allTabsOpen = false; 
+                        allTabsOpen = Array.from(assignmentContentDiv.querySelectorAll('.collapsible-section'))
+                                        .every(section => section.classList.contains('open'));
                     });
                 });
 
-                // Apply the current state of allTabsOpen when content is loaded
-                toggleAllTabs(allTabsOpen);
+                toggleAllTabs(allTabsOpen); // Maintain current global tab state or default to closed
 
                 if (window.MathJax && window.MathJax.typesetPromise) {
                     window.MathJax.typesetPromise([assignmentContentDiv])
@@ -1998,7 +2166,6 @@
             }
         }
 
-        // Function to toggle all collapsible tabs
         function toggleAllTabs(forceState = null) {
             const collapsibleSections = assignmentContentDiv.querySelectorAll('.collapsible-section');
             if (collapsibleSections.length === 0) return;
@@ -2007,11 +2174,12 @@
             if (forceState !== null) {
                 targetState = forceState;
             } else {
-                // Check if any tab is currently open. If yes, targetState is false (close all).
-                // If no tabs are open, targetState is true (open all).
+                 // If not forcing, toggle based on whether *any* are open. If any open, close all. If all closed, open all.
                 const anyOpen = Array.from(collapsibleSections).some(section => section.classList.contains('open'));
                 targetState = !anyOpen;
             }
+            
+            allTabsOpen = targetState; // Update global state
 
             collapsibleSections.forEach(section => {
                 const content = section.querySelector('.collapsible-content');
@@ -2023,7 +2191,6 @@
                     content.style.display = 'none';
                 }
             });
-            allTabsOpen = targetState; // Update the global state
         }
 
 
@@ -2034,6 +2201,26 @@
                 messageArea.classList.remove('visible');
             }, 3000);
         }
+        
+        function fallbackCopyTextToClipboard(text, title) { /* Keep this function as is */
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed"; textArea.style.top = "0"; textArea.style.left = "0";
+            textArea.style.width = "2em"; textArea.style.height = "2em"; textArea.style.padding = "0";
+            textArea.style.border = "none"; textArea.style.outline = "none"; textArea.style.boxShadow = "none";
+            textArea.style.background = "transparent";
+            document.body.appendChild(textArea);
+            textArea.focus(); textArea.select();
+            try {
+                document.execCommand('copy');
+                showTemporaryMessage(`LINK FOR ${title} COPIED! (fallback)`);
+            } catch (err) {
+                showTemporaryMessage('FAILED TO COPY LINK.');
+                console.error('Fallback copy failed', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
 
         function checkUrlParams() {
             const params = new URLSearchParams(window.location.search);
@@ -2053,6 +2240,7 @@
                 currentAssignments = [...assignmentsData]; 
                 pathDisplay.textContent = `PATH: /assignments/`;
             }
+            allTabsOpen = false; // Reset tab state when loading new set of assignments
             renderCarousel(); 
         }
 
@@ -2063,14 +2251,15 @@
             currentAssignments = [...assignmentsData]; 
             currentIndex = 0;
             pathDisplay.textContent = `PATH: /assignments/`;
+            allTabsOpen = false; // Reset tab state on home
             renderCarousel();
-            if (currentAssignments.length > 0) {
-                loadAssignmentContent(currentAssignments[0].id);
+             if (currentAssignments.length > 0 && currentAssignments[currentIndex]) {
+                loadAssignmentContent(currentAssignments[currentIndex].id);
             }
         });
 
         toggleAllTabsButton.addEventListener('click', () => {
-            toggleAllTabs(); // Call the new toggle function
+            toggleAllTabs(); 
         });
 
         prevButton.addEventListener('click', () => {
@@ -2090,12 +2279,16 @@
         let isDown = false;
         let startX;
         
-        carousel.addEventListener('mousedown', (e) => {
+        carousel.addEventListener('mousedown', (e) => { /* Keep this function as is */
             if (currentAssignments.length <= 1) return; isDown = true; carousel.style.cursor = 'grabbing'; startX = e.pageX - carousel.offsetLeft;
         });
-        carousel.addEventListener('mouseleave', () => { if (isDown) { isDown = false; carousel.style.cursor = 'grab';}});
-        carousel.addEventListener('mouseup', () => {if (isDown) { isDown = false; carousel.style.cursor = 'grab';}});
-        carousel.addEventListener('mousemove', (e) => {
+        carousel.addEventListener('mouseleave', () => { /* Keep this function as is */
+            if (isDown) { isDown = false; carousel.style.cursor = 'grab';}
+        });
+        carousel.addEventListener('mouseup', () => { /* Keep this function as is */
+            if (isDown) { isDown = false; carousel.style.cursor = 'grab';}
+        });
+        carousel.addEventListener('mousemove', (e) => { /* Keep this function as is */
             if (!isDown || currentAssignments.length <= 1) return; e.preventDefault(); const x = e.pageX - carousel.offsetLeft; const walk = (x - startX);
             if (Math.abs(walk) > 70) { 
                 if (walk < 0) { nextButton.click(); } else { prevButton.click(); } 
@@ -2103,10 +2296,10 @@
                 isDown = false; 
             }
         });
-        carousel.addEventListener('touchstart', (e) => {
+        carousel.addEventListener('touchstart', (e) => { /* Keep this function as is */
             if (currentAssignments.length <= 1) return; isDown = true; startX = e.touches[0].pageX - carousel.offsetLeft;
         }, { passive: true }); 
-        carousel.addEventListener('touchmove', (e) => {
+        carousel.addEventListener('touchmove', (e) => { /* Keep this function as is */
             if (!isDown || currentAssignments.length <= 1) return; 
             const x = e.touches[0].pageX - carousel.offsetLeft; const walk = (x - startX);
             if (Math.abs(walk) > 50) { 
@@ -2115,14 +2308,18 @@
                 isDown = false;
             }
         }, { passive: false }); 
-        carousel.addEventListener('touchend', () => { isDown = false; });
+        carousel.addEventListener('touchend', () => { /* Keep this function as is */
+            isDown = false; 
+        });
 
         function renderHomework6Charts() {
+            // Retrieve current theme colors using CSS variables
+            // This ensures charts use the correct colors whether in normal or muted mode
             const chartFontFamily = "'Share Tech Mono', monospace";
             const terminalTextColor = getComputedStyle(document.documentElement).getPropertyValue('--terminal-text').trim();
             const terminalAccentColor = getComputedStyle(document.documentElement).getPropertyValue('--terminal-accent').trim();
             const terminalDimTextColor = getComputedStyle(document.documentElement).getPropertyValue('--terminal-dim-text').trim();
-            const gridColor = 'rgba(48, 200, 255, 0.1)'; // Adjusted for blue theme grid
+            const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--glow-color').trim().replace('0.4', '0.1'); // Use glow color with less alpha
 
             const getChartOptions = (titleText, suggestedMinX, suggestedMaxX, suggestedMinY, suggestedMaxY) => ({
                 responsive: true,
@@ -2132,7 +2329,7 @@
                     title: { display: true, text: titleText, color: terminalAccentColor, font: { family: "'VT323', monospace", size: 18, weight: 'normal' } },
                     legend: { labels: { color: terminalTextColor, font: { family: chartFontFamily, size: 12 } } },
                     tooltip: {
-                        backgroundColor: 'rgba(10, 15, 30, 0.85)', /* Adjusted for blue theme */
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--terminal-bg').trim() + 'E6', // terminal-bg with alpha
                         titleFont: { family: chartFontFamily },
                         bodyFont: { family: chartFontFamily },
                         borderColor: terminalAccentColor,
@@ -2159,13 +2356,14 @@
                 }
             });
             
+            // Use current theme's accent and text colors for lines
             const primaryLineColor = terminalAccentColor; 
-            const primaryFillColor = 'rgba(0, 255, 255, 0.15)'; 
+            const primaryFillColor = terminalAccentColor.slice(0, -1) + ', 0.15)'; // Accent with alpha
             const secondaryLineColor = terminalTextColor; 
-            const secondaryFillColor = 'rgba(48, 200, 255, 0.15)'; // Adjusted for blue theme
+            const secondaryFillColor = terminalTextColor.slice(0,-1) + ', 0.15)'; // Text with alpha
 
-            // Chart rendering functions (content remains the same, only colors/options might be affected by CSS vars)
-            // Problem S2P1: y = 0.5x + 3
+
+            // Chart rendering functions 
             const hw6s2p1Ctx = document.getElementById('hw6Sec2Prob1Chart')?.getContext('2d');
             if (hw6s2p1Ctx) {
                 const dataS2P1 = []; for (let x = -7; x <= 1; x += 0.25) { dataS2P1.push({x: x, y: 0.5 * x + 3}); }
@@ -2176,7 +2374,6 @@
                 });
             }
 
-            // Problem S2P2: y = 2x - 3
             const hw6s2p2Ctx = document.getElementById('hw6Sec2Prob2Chart')?.getContext('2d');
             if (hw6s2p2Ctx) {
                 const dataS2P2 = []; for (let x = -1; x <= 3; x += 0.25) { dataS2P2.push({x: x, y: 2 * x - 3}); }
@@ -2187,7 +2384,6 @@
                 });
             }
 
-            // Problem S3P1: y = -2x^2 + 3
             const hw6s3p1Ctx = document.getElementById('hw6Sec3Prob1Chart')?.getContext('2d');
             if (hw6s3p1Ctx) {
                 const dataS3P1 = []; for (let x = -2; x <= 2; x += 0.1) { dataS3P1.push({x: x, y: -2 * x * x + 3}); }
@@ -2198,7 +2394,6 @@
                 });
             }
             
-            // Problem S3P2: y = -2x + 3
             const hw6s3p2Ctx = document.getElementById('hw6Sec3Prob2Chart')?.getContext('2d');
             if (hw6s3p2Ctx) {
                 const dataS3P2 = []; for (let x = -1; x <= 3; x += 0.25) { dataS3P2.push({x: x, y: -2 * x + 3}); }
@@ -2209,7 +2404,6 @@
                 });
             }
 
-            // Problem S3P3: y = x^2 - 1
             const hw6s3p3Ctx = document.getElementById('hw6Sec3Prob3Chart')?.getContext('2d');
             if (hw6s3p3Ctx) {
                 const dataS3P3 = []; for (let x = -2.5; x <= 2.5; x += 0.1) { dataS3P3.push({x: x, y: x * x - 1}); }
@@ -2220,7 +2414,6 @@
                 });
             }
 
-            // Problem S3P4: y = 2/x
             const hw6s3p4Ctx = document.getElementById('hw6Sec3Prob4Chart')?.getContext('2d');
             if (hw6s3p4Ctx) {
                 const dataS3P4_branch1 = []; const dataS3P4_branch2 = [];
@@ -2239,7 +2432,6 @@
                 });
             }
 
-            // Problem S3P5: y = 0.5x + 2
             const hw6s3p5Ctx = document.getElementById('hw6Sec3Prob5Chart')?.getContext('2d');
             if (hw6s3p5Ctx) {
                 const dataS3P5 = []; for (let x = -5; x <= 1; x += 0.25) { dataS3P5.push({x: x, y: 0.5 * x + 2}); }
@@ -2252,7 +2444,44 @@
         }
 
         window.addEventListener('load', () => {
-            typeBootText(); 
+            const hasPlayedOnceKey = 'math125_v3_hasBootAnimationPlayedOnce';
+            const noShowStreakKey = 'math125_v3_animationNoShowStreak';
+
+            let hasBootAnimationPlayedOnce = localStorage.getItem(hasPlayedOnceKey) === 'true';
+            let animationNoShowStreak = parseInt(localStorage.getItem(noShowStreakKey) || '0');
+            let shouldPlayAnimation = false;
+
+            if (!hasBootAnimationPlayedOnce) {
+                shouldPlayAnimation = true;
+                localStorage.setItem(hasPlayedOnceKey, 'true');
+                localStorage.setItem(noShowStreakKey, '0'); 
+            } else {
+                animationNoShowStreak++;
+                if (animationNoShowStreak >= 4) { 
+                    if (Math.random() < 0.25) { 
+                        shouldPlayAnimation = true;
+                        localStorage.setItem(noShowStreakKey, '0'); 
+                    } else {
+                        shouldPlayAnimation = false;
+                        localStorage.setItem(noShowStreakKey, animationNoShowStreak.toString());
+                    }
+                } else {
+                    shouldPlayAnimation = false;
+                    localStorage.setItem(noShowStreakKey, animationNoShowStreak.toString());
+                }
+            }
+
+            if (shouldPlayAnimation) {
+                lineIndex = 0; charIndex = 0; bootTextDiv.innerHTML = '';
+                bootSequenceDiv.style.opacity = 1; bootSequenceDiv.style.display = 'flex';
+                containerDiv.style.display = 'none'; 
+                typeBootText(); 
+            } else {
+                bootSequenceDiv.style.opacity = 0; bootSequenceDiv.style.display = 'none';
+                containerDiv.style.display = 'flex';
+                checkUrlParams(); 
+                applyMutedColorsPreference(); // Apply muted preference after content is shown
+            }
         });
         
         window.addEventListener('resize', () => {
@@ -2263,7 +2492,7 @@
                     setTimeout(() => { 
                         destroyActiveCharts();
                         renderHomework6Charts();
-                    }, 250);
+                    }, 150); // Slightly shorter delay
                 }
             }
         });
