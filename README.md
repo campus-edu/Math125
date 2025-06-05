@@ -5,6 +5,8 @@ Jason Orozco Zarco
 
 these are my missing assignments.
 
-life got it the way for a min.
+life got in the way for a min.
+
+survive capitalism type shii.
 
 design not final, but retro 
