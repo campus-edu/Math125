@@ -10,3 +10,5 @@ life got in the way for a min.
 survive capitalism type shii.
 
 design not final, but retro 
+
+https://campus-edu.github.io/Math125/
