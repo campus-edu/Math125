@@ -1,0 +1,2182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math_125 v3</title> <!-- Changed Title Here -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+
+        :root {
+            /* Cool Blue "Hacker" Vibes */
+            --terminal-bg: #0A0F1E; /* Deep Dark Blue */
+            --terminal-text: #30C8FF; /* Bright Blue */
+            --terminal-accent: #80FFFF; /* Lighter Cyan/Aqua */
+            --terminal-dim-text: #1E88A8; /* Dimmer Blue */
+            --border-color: #30C8FF;
+            --glow-color: rgba(48, 200, 255, 0.4);
+            --item-bg: rgba(20, 40, 70, 0.3);
+            --item-border: #25A0CC;
+            --item-hover-bg: rgba(30, 60, 100, 0.5);
+            /* Section colors */
+            --section-color-1: #FF6B6B; /* Coral */
+            --section-color-2: #42E2B8; /* Teal */
+            --section-color-3: #BD93F9; /* Purple */
+            --section-color-4: #50FA7B; /* Bright Green */
+            --section-color-5: #FF79C6; /* Pink */
+            --section-color-6: #FFB86C; /* Orange */
+            --section-color-7: #F1FA8C; /* Yellow */
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--terminal-bg);
+            color: var(--terminal-text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+            text-shadow: 0 0 5px var(--glow-color);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15), rgba(0,0,0,0.15) 1px, transparent 1px, transparent 3px);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 1rem auto;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 15px var(--glow-color);
+            background-color: rgba(10, 20, 30, 0.5); /* Adjusted for blue theme */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-family: 'VT323', monospace;
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .terminal-nav button {
+            background-color: transparent;
+            color: var(--terminal-accent);
+            border: 1px solid var(--terminal-accent);
+            padding: 0.5rem 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 3px var(--terminal-accent);
+            margin-top: 0.5rem;
+        }
+
+        .terminal-nav button:hover {
+            background-color: var(--terminal-accent);
+            color: var(--terminal-bg);
+            box-shadow: 0 0 10px var(--terminal-accent);
+        }
+        
+        .path-display {
+            font-size: 0.9rem;
+            color: var(--terminal-dim-text);
+            margin-top: 0.5rem;
+            word-break: break-all;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            gap: 1rem;
+            overflow: hidden;
+        }
+
+        .carousel-container {
+            width: 100%;
+            height: 220px; 
+            perspective: 1000px; 
+            overflow: hidden; 
+            position: relative;
+            padding: 10px 0;
+            border: 1px dashed var(--terminal-dim-text);
+            margin-bottom: 1rem;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel {
+            width: 100%; 
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 220px; 
+            height: 140px;
+            left: 50%; 
+            top: 50%;
+            background-color: var(--item-bg);
+            border: 2px solid var(--item-border);
+            box-shadow: 0 0 10px var(--item-border);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.5s ease, opacity 0.5s ease, box-shadow 0.3s ease;
+            padding: 15px;
+            color: var(--terminal-text);
+            font-size: 1.1rem;
+        }
+        
+        .carousel-item h3 {
+            font-family: 'VT323', monospace;
+            font-size: 1.3rem;
+            margin: 0 0 10px 0;
+            word-break: break-all;
+            line-height: 1.2;
+        }
+
+        .carousel-item:hover {
+            box-shadow: 0 0 20px var(--terminal-accent);
+            border-color: var(--terminal-accent);
+            background-color: var(--item-hover-bg);
+        }
+        
+        .carousel-item.active {
+            border-color: var(--terminal-accent);
+            box-shadow: 0 0 25px var(--terminal-accent), 0 0 10px #E0E0E0; /* Lighter glow for active */
+            z-index: 10; 
+        }
+
+        .share-button {
+            background-color: var(--terminal-accent);
+            color: var(--terminal-bg);
+            border: none;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            text-shadow: none;
+            box-shadow: 0 0 5px var(--terminal-accent);
+        }
+
+        .share-button:hover {
+            background-color: #80FFFF80; /* Lighter accent on hover */
+            transform: scale(1.05);
+        }
+        
+        .assignment-content-container {
+            flex-grow: 1;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            background-color: rgba(10, 20, 30, 0.7); /* Adjusted for blue theme */
+            overflow-y: auto;
+            max-height: 60vh; 
+        }
+
+        #assignment-content h2 {
+            font-family: 'VT323', monospace;
+            font-size: 1.8rem;
+            color: var(--terminal-accent);
+            border-bottom: 1px solid var(--terminal-dim-text);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .collapsible-section {
+            margin-bottom: 1rem;
+            border: 1px solid var(--terminal-dim-text);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .collapsible-header { 
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s;
+            color: var(--terminal-bg);  /* Text color on header background */
+        }
+        .collapsible-header::after { 
+            content: '[+]';
+            font-family: 'VT323', monospace;
+            margin-left: 10px;
+            font-size: 1.2em;
+        }
+        .collapsible-section.open .collapsible-header::after {
+            content: '[-]';
+        }
+
+        .collapsible-content {
+            padding: 15px;
+            background-color: rgba(0,0,0,0.3); 
+            border-top: 1px solid var(--terminal-dim-text);
+            display: none;
+            color: var(--terminal-text);
+        }
+        .collapsible-section.open .collapsible-content {
+            display: block;
+        }
+
+        /* Color coding for section headers */
+        .collapsible-section.color-1 .collapsible-header { background-color: var(--section-color-1); }
+        .collapsible-section.color-2 .collapsible-header { background-color: var(--section-color-2); }
+        .collapsible-section.color-3 .collapsible-header { background-color: var(--section-color-3); color: #111; } /* Darker text for yellow */
+        .collapsible-section.color-4 .collapsible-header { background-color: var(--section-color-4); }
+        .collapsible-section.color-5 .collapsible-header { background-color: var(--section-color-5); }
+        .collapsible-section.color-6 .collapsible-header { background-color: var(--section-color-6); color: #111; } /* Darker text for orange */
+        .collapsible-section.color-7 .collapsible-header { background-color: var(--section-color-7); color: #111; } /* Darker text for light blue */
+
+
+        .assignment-document p, .assignment-document li {
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+        .assignment-document strong { 
+            color: var(--terminal-accent); 
+            font-weight: normal; 
+        }
+        .assignment-document .solution > p:first-child > strong {
+             color: var(--terminal-text);
+        }
+        .assignment-document .solution {
+            padding-left: 1rem;
+            border-left: 2px solid var(--terminal-dim-text);
+            margin-top: 0.5rem;
+        }
+        .graph-container {
+            width: 100%;
+            max-width: 550px; 
+            height: 350px; 
+            margin: 20px auto;
+            padding: 10px;
+            background-color: rgba(0,0,0, 0.5); 
+            border: 1px solid var(--terminal-dim-text);
+            border-radius: 4px;
+        }
+        .graph-container canvas {
+            background-color: rgba(5, 10, 15, 0.9); /* Darker blue canvas BG */
+            border-radius: 4px;
+        }
+        .data-anomaly-block {
+            border: 2px dashed var(--section-color-1); 
+            padding: 15px;
+            margin: 15px 0;
+            background-color: rgba(255, 107, 107, 0.05); 
+            color: var(--section-color-1); 
+        }
+        .data-anomaly-block .anomaly-title {
+            font-family: 'VT323', monospace;
+            font-size: 1.4em; 
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px var(--section-color-1);
+        }
+        .data-anomaly-block p {
+            color: var(--section-color-1) !important; 
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        .data-anomaly-block code {
+            background-color: rgba(0,0,0,0.3);
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+
+        .message-area {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--terminal-accent);
+            color: var(--terminal-bg);
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px var(--terminal-accent);
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            font-size: 0.9rem;
+            text-shadow: none;
+        }
+
+        .message-area.visible {
+            opacity: 1;
+        }
+
+        #boot-sequence {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--terminal-bg);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: opacity 0.25s ease-in-out; /* Faster fade-out for boot sequence */
+        }
+
+        #boot-text {
+            font-family: 'VT323', monospace;
+            font-size: clamp(1rem, 3vw, 1.8rem);
+            white-space: pre-wrap;
+            text-align: left;
+            max-width: 800px;
+        }
+
+        .typed-cursor {
+            display: inline-block;
+            width: 0.6em;
+            height: 1.2em;
+            background-color: var(--terminal-text);
+            animation: blink 0.7s infinite;
+            margin-left: 2px;
+            vertical-align: bottom;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px; 
+            box-sizing: border-box;
+            pointer-events: none; 
+        }
+
+        .carousel-nav button {
+            background: rgba(48, 200, 255, 0.2); /* Adjusted for blue theme */
+            border: 1px solid var(--terminal-accent);
+            color: var(--terminal-accent);
+            font-size: 1.5rem;
+            padding: 5px 10px;
+            cursor: pointer;
+            z-index: 20; 
+            pointer-events: all; 
+            opacity: 0.7;
+            transition: opacity 0.3s, background-color 0.3s;
+        }
+
+        .carousel-nav button:hover {
+            opacity: 1;
+            background: rgba(48, 200, 255, 0.4); /* Adjusted for blue theme */
+        }
+        
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            .container { width: 100%; margin: 0; padding: 0.5rem; border: none; box-shadow: none; }
+            .main-content { flex-direction: column; }
+            .carousel-container { height: 200px; } 
+            .carousel-item { width: 180px; height: 120px; font-size: 1rem; }
+            .carousel-item h3 { font-size: 1.1rem; }
+            .carousel-nav button { font-size: 1.2rem; padding: 3px 8px; }
+            .assignment-content-container { max-height: 55vh; padding: 10px; } 
+            #assignment-content h2 { font-size: 1.5rem; }
+            .collapsible-header { font-size: 1rem; padding: 8px 12px; }
+            .terminal-nav button { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
+            .path-display { font-size: 0.8rem; }
+            .graph-container { max-width: 90%; height: 300px; }
+        }
+
+        @media (max-width: 480px) {
+            header { flex-direction: column; align-items: flex-start; }
+            header h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+            .terminal-nav { width: 100%; display: flex; justify-content: space-between; }
+            .carousel-container { height: 180px; } 
+            .carousel-item { width: 150px; height: 100px; }
+            .carousel-item h3 { font-size: 0.9rem; }
+            .share-button { padding: 6px 10px; font-size: 0.8rem; }
+            .graph-container { height: 250px; }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="boot-sequence">
+        <div id="boot-text"></div><span class="typed-cursor"></span>
+    </div>
+
+    <div class="container" style="display:none;">
+        <header>
+            <h1>Math_125 v3</h1> <!-- Changed Header Text Here -->
+            <div class="terminal-nav">
+                <button id="homeButton">C:\&gt; ROOT_DIR</button>
+            </div>
+        </header>
+        <div class="path-display" id="pathDisplay">PATH: /assignments/</div>
+
+        <div class="main-content">
+            <div class="carousel-container">
+                <div class="carousel" id="assignmentCarousel">
+                    <!-- Carousel items will be injected here by JavaScript -->
+                </div>
+                <div class="carousel-nav">
+                    <button id="prevButton">&lt;</button>
+                    <button id="nextButton">&gt;</button>
+                </div>
+            </div>
+
+            <div class="assignment-content-container">
+                <div id="assignment-content">
+                    <div class="pdf-placeholder">SELECT AN ASSIGNMENT MODULE TO LOAD DATASTREAM...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="messageArea" class="message-area">Link copied to clipboard!</div>
+
+    <script>
+        // --- ASSIGNMENT DATA (Content remains the same) ---
+        const assignmentsData = [
+            { 
+                id: "exam1",
+                title: "Exam 1",
+                contentHTML: function() {
+                    return `
+                        <div class="assignment-document">
+                            <h2>Exam 1 :: Midterm Assessment Protocols</h2>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 1: Expand and Combine</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Expand the following expression and combine like terms. Show each step in your process. \\(x(x-1)+4(x^{2}+3)-(x-1)(x+2)-4x^{2}-12\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Expand each product term by term.</p>
+                                        <p>\\(x(x-1) = x^2 - x\\)</p>
+                                        <p>\\(4(x^2+3) = 4x^2 + 12\\)</p>
+                                        <p>\\((x-1)(x+2) = x(x+2) - 1(x+2) = x^2 + 2x - x - 2 = x^2 + x - 2\\)</p>
+                                        <p>Step 2: Substitute the expanded parts back into the original expression.</p>
+                                        <p>\\((x^2 - x) + (4x^2 + 12) - (x^2 + x - 2) - 4x^2 - 12\\)</p>
+                                        <p>Step 3: Distribute the negative sign to the terms in the parenthesis \\(-(x^2 + x - 2)\\).</p>
+                                        <p>\\(x^2 - x + 4x^2 + 12 - x^2 - x + 2 - 4x^2 - 12\\)</p>
+                                        <p>Step 4: Group and combine like terms.</p>
+                                        <p>For \\(x^2\\) terms: \\(x^2 + 4x^2 - x^2 - 4x^2 = (1+4-1-4)x^2 = 0x^2 = 0\\)</p>
+                                        <p>For \\(x\\) terms: \\(-x - x = -2x\\)</p>
+                                        <p>For constant terms: \\(12 + 2 - 12 = 2\\)</p>
+                                        <p>Step 5: Write the simplified expression.</p>
+                                        <p>\\(0 - 2x + 2 = -2x + 2\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(-2x + 2\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Problem 2a: Simplify Exponents</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Simplify \\(\\frac{a^{4}b^{5}}{ab^{2}}\\). Write your answer with positive exponents.</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Using the quotient rule for exponents \\(\\frac{x^m}{x^n} = x^{m-n}\\) for each variable:</p>
+                                        <p>For 'a': \\(\\frac{a^4}{a^1} = a^{4-1} = a^3\\)</p>
+                                        <p>For 'b': \\(\\frac{b^5}{b^2} = b^{5-2} = b^3\\)</p>
+                                        <p>Combine the results:</p>
+                                        <p>\\(a^3b^3\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(a^3b^3\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-3">
+                                <div class="collapsible-header">Problem 2b: Simplify Complex Exponents</div>
+                                <div class="collapsible-content">
+                                   <p><strong>Question:</strong> Simplify \\(\\frac{(x^{2}y^{3})^{2}}{(x^{-1}y^{2})^{3}}\\). Write your answer with positive exponents.</p>
+                                   <div class="solution">
+                                       <p><strong>Solution:</strong></p>
+                                       <p>Step 1: Apply the power rule \\((uv)^n = u^n v^n\\) and \\((u^m)^n = u^{mn}\\) to the numerator and the denominator.</p>
+                                       <p>Numerator: \\((x^2y^3)^2 = (x^2)^2 (y^3)^2 = x^{2 \\cdot 2} y^{3 \\cdot 2} = x^4 y^6\\)</p>
+                                       <p>Denominator: \\((x^{-1}y^2)^3 = (x^{-1})^3 (y^2)^3 = x^{-1 \\cdot 3} y^{2 \\cdot 3} = x^{-3} y^6\\)</p>
+                                       <p>Step 2: Rewrite the expression with the simplified numerator and denominator.</p>
+                                       <p>\\(\\frac{x^4 y^6}{x^{-3} y^6}\\)</p>
+                                       <p>Step 3: Apply the quotient rule \\(\\frac{u^m}{u^n} = u^{m-n}\\) for each variable.</p>
+                                       <p>For 'x': \\(\\frac{x^4}{x^{-3}} = x^{4 - (-3)} = x^{4+3} = x^7\\)</p>
+                                       <p>For 'y': \\(\\frac{y^6}{y^6} = y^{6-6} = y^0 = 1\\) (assuming \\(y \\neq 0\\))</p>
+                                       <p>Step 4: Combine the results.</p>
+                                       <p>\\(x^7 \\cdot 1 = x^7\\)</p>
+                                       <p><strong>Final Answer:</strong> \\(x^7\\)</p>
+                                   </div>
+                                </div>
+                            </div>
+                             <div class="collapsible-section color-4">
+                                <div class="collapsible-header">Problem 3a: Simplify Radical</div>
+                                <div class="collapsible-content">
+                                   <p><strong>Question:</strong> Simplify \\(\\sqrt{4a^{4}b^{10}c^{20}}\\). Assume all variables under the radical are positive.</p>
+                                   <div class="solution">
+                                       <p><strong>Solution:</strong></p>
+                                       <p>Using the property \\(\\sqrt{uvw} = \\sqrt{u}\\sqrt{v}\\sqrt{w}\\), we can separate the terms:</p>
+                                       <p>\\(\\sqrt{4} \\cdot \\sqrt{a^4} \\cdot \\sqrt{b^{10}} \\cdot \\sqrt{c^{20}}\\)</p>
+                                       <p>Simplify each square root:</p>
+                                       <p>\\(\\sqrt{4} = 2\\)</p>
+                                       <p>\\(\\sqrt{a^4} = a^{4/2} = a^2\\)</p>
+                                       <p>\\(\\sqrt{b^{10}} = b^{10/2} = b^5\\)</p>
+                                       <p>\\(\\sqrt{c^{20}} = c^{20/2} = c^{10}\\)</p>
+                                       <p>Combine the simplified terms:</p>
+                                       <p>\\(2a^2b^5c^{10}\\)</p>
+                                       <p><strong>Final Answer:</strong> \\(2a^2b^5c^{10}\\)</p>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-5">
+                                <div class="collapsible-header">Problem 3b: Simplify Radical with Coefficients</div>
+                                <div class="collapsible-content">
+                                   <p><strong>Question:</strong> Simplify \\(\\sqrt{32x^{5}y^{10}z^{9}}\\). Assume all variables under the radical are positive.</p>
+                                   <div class="solution">
+                                       <p><strong>Solution:</strong></p>
+                                       <p>Step 1: Factor the number and each variable term under the radical into perfect squares and remaining factors.</p>
+                                       <p>\\(32 = 16 \\cdot 2\\) (where 16 is a perfect square)</p>
+                                       <p>\\(x^5 = x^4 \\cdot x\\) (where \\(x^4\\) is a perfect square)</p>
+                                       <p>\\(y^{10}\\) is already a perfect square (since the exponent is even).</p>
+                                       <p>\\(z^9 = z^8 \\cdot z\\) (where \\(z^8\\) is a perfect square)</p>
+                                       <p>Rewrite the expression:</p>
+                                       <p>\\(\\sqrt{16 \\cdot 2 \cdot x^4 \cdot x \cdot y^{10} \cdot z^8 \cdot z}\\)</p>
+                                       <p>Step 2: Group the perfect square terms together.</p>
+                                       <p>\\(\\sqrt{(16x^4y^{10}z^8)(2xz)}\\)</p>
+                                       <p>Step 3: Take the square root of the perfect square parts and leave the remaining factors under the radical.</p>
+                                       <p>\\(\\sqrt{16x^4y^{10}z^8} = \\sqrt{16} \\cdot \\sqrt{x^4} \\cdot \\sqrt{y^{10}} \\cdot \\sqrt{z^8} = 4x^{4/2}y^{10/2}z^{8/2} = 4x^2y^5z^4\\)</p>
+                                       <p>The remaining part under the radical is \\(2xz\\).</p>
+                                       <p>Combine the results:</p>
+                                       <p>\\(4x^2y^5z^4\\sqrt{2xz}\\)</p>
+                                       <p><strong>Final Answer:</strong> \\(4x^2y^5z^4\\sqrt{2xz}\\)</p>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-6">
+                                <div class="collapsible-header">Problem 4: Determine Leading Term Coefficients</div>
+                                <div class="collapsible-content">
+                                   <p><strong>Question:</strong> Determine what \\(a\\) and \\(n\\) should be so that the leading term of \\(x^{2}(2x+1)(ax^{3}-3)(5x^{n}+1)\\) is \\(30x^{15}\\).</p>
+                                   <div class="solution">
+                                       <p><strong>Solution:</strong></p>
+                                       <p>To find the leading term of the entire polynomial, we multiply the leading terms of each factor:</p>
+                                       <p>Leading term of \\(x^2\\) is \\(x^2\\).</p>
+                                       <p>Leading term of \\((2x+1)\\) is \\(2x\\) (or \\(2x^1\\)).</p>
+                                       <p>Leading term of \\((ax^3-3)\\) is \\(ax^3\\).</p>
+                                       <p>Leading term of \\((5x^n+1)\\) is \\(5x^n\\).</p>
+                                       <p>Multiply these leading terms together:</p>
+                                       <p>\\((x^2)(2x^1)(ax^3)(5x^n)\\)</p>
+                                       <p>Multiply the coefficients: \\(1 \\cdot 2 \cdot a \cdot 5 = 10a\\)</p>
+                                       <p>Multiply the variable parts by adding exponents: \\(x^{2+1+3+n} = x^{6+n}\\)</p>
+                                       <p>So the leading term of the product is \\(10ax^{6+n}\\).</p>
+                                       <p>We are given that this leading term must be \\(30x^{15}\\).</p>
+                                       <p>Equate the coefficients: \\(10a = 30 \\Rightarrow a = \\frac{30}{10} \\Rightarrow a = 3\\)</p>
+                                       <p>Equate the exponents: \\(6+n = 15 \\Rightarrow n = 15 - 6 \\Rightarrow n = 9\\)</p>
+                                       <p><strong>Final Answer:</strong> \\(a = 3\\) and \\(n = 9\\)</p>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-7">
+                                <div class="collapsible-header">Problem 5a: Factor with GCF</div>
+                                <div class="collapsible-content">
+                                   <p><strong>Question:</strong> Fully factor \\(9m^{2}n^{2}+12mn^{3}-6mn\\).</p>
+                                   <div class="solution">
+                                       <p><strong>Solution:</strong></p>
+                                       <p>Step 1: Find the Greatest Common Factor (GCF) of all terms.</p>
+                                       <p>For coefficients (9, 12, -6): The GCF is 3.</p>
+                                       <p>For variable 'm' (\\(m^2, m, m\\)): The lowest power is \\(m^1\\), so GCF is \\(m\\).</p>
+                                       <p>For variable 'n' (\\(n^2, n^3, n\\)): The lowest power is \\(n^1\\), so GCF is \\(n\\).</p>
+                                       <p>The overall GCF is \\(3mn\\).</p>
+                                       <p>Step 2: Factor out the GCF from each term.</p>
+                                       <p>\\(9m^2n^2 = 3mn \\cdot 3mn\\)</p>
+                                       <p>\\(12mn^3 = 3mn \\cdot 4n^2\\)</p>
+                                       <p>\\(-6mn = 3mn \\cdot (-2)\\)</p>
+                                       <p>So, \\(9m^{2}n^{2}+12mn^{3}-6mn = 3mn(3mn + 4n^2 - 2)\\)</p>
+                                       <p><strong>Final Answer:</strong> \\(3mn(3mn + 4n^2 - 2)\\)</p>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 5b: Factor Trinomial</div>
+                                <div class="collapsible-content">
+                                   <p><strong>Question:</strong> Fully factor \\(x^{2}-10x+21\\).</p>
+                                   <div class="solution">
+                                       <p><strong>Solution:</strong></p>
+                                       <p>We are looking for two numbers that multiply to 21 (the constant term) and add to -10 (the coefficient of the x term).</p>
+                                       <p>The pairs of factors for 21 are: (1, 21), (-1, -21), (3, 7), (-3, -7).</p>
+                                       <p>Check their sums:</p>
+                                       <p>1 + 21 = 22</p>
+                                       <p>-1 + (-21) = -22</p>
+                                       <p>3 + 7 = 10</p>
+                                       <p>-3 + (-7) = -10</p>
+                                       <p>The numbers are -3 and -7.</p>
+                                       <p>So, the factored form is \\((x-3)(x-7)\\).</p>
+                                       <p><strong>Final Answer:</strong> \\((x-3)(x-7)\\)</p>
+                                   </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Problem 5c: Factor Trinomial (AC Method)</div>
+                                <div class="collapsible-content">
+                                   <p><strong>Question:</strong> Fully factor \\(3x^{2}+14x+8\\).</p>
+                                   <div class="solution">
+                                       <p><strong>Solution:</strong></p>
+                                       <p>Using the AC method, where \\(A=3, B=14, C=8\\).</p>
+                                       <p>Step 1: Multiply A and C: \\(A \\cdot C = 3 \\cdot 8 = 24\\).</p>
+                                       <p>Step 2: Find two numbers that multiply to 24 and add to B (which is 14).</p>
+                                       <p>The pairs of factors for 24 are: (1, 24), (2, 12), (3, 8), (4, 6).</p>
+                                       <p>Check their sums: 1+24=25, 2+12=14, 3+8=11, 4+6=10.</p>
+                                       <p>The numbers are 2 and 12.</p>
+                                       <p>Step 3: Rewrite the middle term (14x) using these two numbers: \\(12x + 2x\\).</p>
+                                       <p>\\(3x^2 + 12x + 2x + 8\\)</p>
+                                       <p>Step 4: Factor by grouping.</p>
+                                       <p>Group the first two terms and the last two terms: \\((3x^2 + 12x) + (2x + 8)\\)</p>
+                                       <p>Factor out GCF from each group: \\(3x(x+4) + 2(x+4)\\)</p>
+                                       <p>Step 5: Factor out the common binomial factor \\((x+4)\\).</p>
+                                       <p>\\((x+4)(3x+2)\\)</p>
+                                       <p><strong>Final Answer:</strong> \\((3x+2)(x+4)\\)</p>
+                                   </div>
+                                </div>
+                            </div>
+                             <div class="collapsible-section color-3">
+                                <div class="collapsible-header">Problem 6: Combine Rational Expressions</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Combine \\(\\frac{4x-2}{x^{2}-1}-\\frac{3}{x+1}\\) into a single, simplified rational expression.</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor the denominators completely.</p>
+                                        <p>\\(x^2-1 = (x-1)(x+1)\\) (Difference of squares)</p>
+                                        <p>The expression becomes: \\(\\frac{4x-2}{(x-1)(x+1)} - \\frac{3}{x+1}\\)</p>
+                                        <p>Step 2: Find the Least Common Denominator (LCD).</p>
+                                        <p>The LCD is \\((x-1)(x+1)\\).</p>
+                                        <p>Step 3: Rewrite the second fraction so it has the LCD. Multiply its numerator and denominator by \\((x-1)\\).</p>
+                                        <p>\\(\\frac{3}{x+1} = \\frac{3(x-1)}{(x+1)(x-1)}\\)</p>
+                                        <p>Step 4: Substitute this back into the expression and perform the subtraction.</p>
+                                        <p>\\(\\frac{4x-2}{(x-1)(x+1)} - \\frac{3(x-1)}{(x-1)(x+1)}\\)</p>
+                                        <p>\\(= \\frac{(4x-2) - 3(x-1)}{(x-1)(x+1)}\\)</p>
+                                        <p>Step 5: Distribute and simplify the numerator.</p>
+                                        <p>\\(= \\frac{4x-2 - 3x + 3}{(x-1)(x+1)}\\)</p>
+                                        <p>\\(= \\frac{(4x-3x) + (-2+3)}{(x-1)(x+1)}\\)</p>
+                                        <p>\\(= \\frac{x+1}{(x-1)(x+1)}\\)</p>
+                                        <p>Step 6: Simplify by canceling the common factor \\((x+1)\\) from the numerator and denominator, noting that \\(x \\neq -1\\).</p>
+                                        <p>\\(= \\frac{1}{x-1}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{1}{x-1}\\) (Restrictions: \\(x \\neq 1, x \\neq -1\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            { 
+                id: "hw2",
+                title: "Homework 2", 
+                contentHTML: function() {
+                    return `
+                        <div class="assignment-document">
+                            <h2>Homework 2 :: Expression Manipulation Matrix</h2>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 1: Simplify Linear Expression</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Simplify: \\(3x+4z-(x-3z)+5x-10z\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Distribute the negative sign to the terms in the parenthesis.</p>
+                                        <p>\\(3x+4z-x+3z+5x-10z\\)</p>
+                                        <p>Step 2: Group like terms (terms with x and terms with z).</p>
+                                        <p>For x terms: \\(3x-x+5x\\)</p>
+                                        <p>For z terms: \\(4z+3z-10z\\)</p>
+                                        <p>Step 3: Combine the coefficients of like terms.</p>
+                                        <p>\\((3-1+5)x = (2+5)x = 7x\\)</p>
+                                        <p>\\((4+3-10)z = (7-10)z = -3z\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(7x-3z\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Problem 2: Distribute and Simplify</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Simplify: \\(4x^{2}(x^{3}-x+2)\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Distribute \\(4x^2\\) to each term inside the parenthesis:</p>
+                                        <p>\\(4x^2 \\cdot x^3 - 4x^2 \\cdot x + 4x^2 \\cdot 2\\)</p>
+                                        <p>Apply the product of powers rule \\(a^m \cdot a^n = a^{m+n}\\):</p>
+                                        <p>\\(= 4x^{2+3} - 4x^{2+1} + 8x^2\\)</p>
+                                        <p>\\(= 4x^5 - 4x^3 + 8x^2\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(4x^5 - 4x^3 + 8x^2\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-3">
+                                <div class="collapsible-header">Problem 3: Polynomial Multiplication</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Simplify: \\((x-1)(x^{2}+x-1)\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Use the distributive property (or FOIL extended): multiply each term in the first polynomial by each term in the second polynomial.</p>
+                                        <p>\\(x(x^2+x-1) - 1(x^2+x-1)\\)</p>
+                                        <p>\\(= (x \\cdot x^2 + x \\cdot x - x \cdot 1) - (1 \cdot x^2 + 1 \cdot x - 1 \cdot 1)\\)</p>
+                                        <p>\\(= (x^3 + x^2 - x) - (x^2 + x - 1)\\)</p>
+                                        <p>Distribute the negative sign:</p>
+                                        <p>\\(= x^3 + x^2 - x - x^2 - x + 1\\)</p>
+                                        <p>Combine like terms:</p>
+                                        <p>\\(x^3 + (x^2-x^2) + (-x-x) + 1\\)</p>
+                                        <p>\\(= x^3 + 0x^2 - 2x + 1\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(x^3 - 2x + 1\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-4">
+                                <div class="collapsible-header">Problem 4: Expand and Simplify Multiple Products</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Simplify: \\(3(x-y)(2x+y)-(y+x)(3x-y)\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Expand the first product term \\((x-y)(2x+y)\\).</p>
+                                        <p>\\((x-y)(2x+y) = x(2x) + x(y) - y(2x) - y(y) = 2x^2 + xy - 2xy - y^2 = 2x^2 - xy - y^2\\)</p>
+                                        <p>So, \\(3(x-y)(2x+y) = 3(2x^2 - xy - y^2) = 6x^2 - 3xy - 3y^2\\)</p>
+                                        <p>Step 2: Expand the second product term \\((y+x)(3x-y)\\).</p>
+                                        <p>\\((y+x)(3x-y) = y(3x) + y(-y) + x(3x) + x(-y) = 3xy - y^2 + 3x^2 - xy = 3x^2 + 2xy - y^2\\)</p>
+                                        <p>Step 3: Substitute the expanded products back and subtract.</p>
+                                        <p>\\((6x^2 - 3xy - 3y^2) - (3x^2 + 2xy - y^2)\\)</p>
+                                        <p>Distribute the negative sign:</p>
+                                        <p>\\(6x^2 - 3xy - 3y^2 - 3x^2 - 2xy + y^2\\)</p>
+                                        <p>Step 4: Combine like terms.</p>
+                                        <p>For \\(x^2\\) terms: \\(6x^2 - 3x^2 = 3x^2\\)</p>
+                                        <p>For \\(xy\\) terms: \\(-3xy - 2xy = -5xy\\)</p>
+                                        <p>For \\(y^2\\) terms: \\(-3y^2 + y^2 = -2y^2\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(3x^2 - 5xy - 2y^2\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-5">
+                                <div class="collapsible-header">Problem 5: Simplify Product of Powers</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Simplify: \\((x^{4})^{2} \cdot x^{5}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Apply the power of a power rule \\((a^m)^n = a^{mn}\\) to the first term.</p>
+                                        <p>\\((x^4)^2 = x^{4 \cdot 2} = x^8\\)</p>
+                                        <p>Step 2: Multiply by \\(x^5\\), using the product of powers rule \\(a^m \cdot a^n = a^{m+n}\\).</p>
+                                        <p>\\(x^8 \cdot x^5 = x^{8+5} = x^{13}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(x^{13}\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="collapsible-section color-6">
+                                <div class="collapsible-header">Problem 6: Simplify Quotient with Negative Exponents</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Simplify: \\(\\frac{x^{5}y^{-2}}{x^{3}y}\\). Write your answer with positive exponents.</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Using the quotient rule \\(\\frac{a^m}{a^n} = a^{m-n}\\) for each variable:</p>
+                                        <p>For 'x': \\(\\frac{x^5}{x^3} = x^{5-3} = x^2\\)</p>
+                                        <p>For 'y' (remember \\(y = y^1\\)): \\(\\frac{y^{-2}}{y^1} = y^{-2-1} = y^{-3}\\)</p>
+                                        <p>Combine these results: \\(x^2y^{-3}\\)</p>
+                                        <p>To write with positive exponents, use the rule \\(a^{-n} = \\frac{1}{a^n}\\):</p>
+                                        <p>\\(y^{-3} = \\frac{1}{y^3}\\)</p>
+                                        <p>So, \\(x^2y^{-3} = x^2 \cdot \\frac{1}{y^3} = \\frac{x^2}{y^3}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{x^2}{y^3}\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-7">
+                                <div class="collapsible-header">Problem 7 (*): Simplify Complex Fraction with Negative Exponents</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Simplify: \\((\\frac{x^{-3}}{3y^{-1}})^{-2}\\). Write your answer with positive exponents.</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Method 1: Simplify inside the parenthesis first.</p>
+                                        <p>\\(x^{-3} = \\frac{1}{x^3}\\) and \\(y^{-1} = \\frac{1}{y}\\).</p>
+                                        <p>So, \\(\\frac{x^{-3}}{3y^{-1}} = \\frac{\\frac{1}{x^3}}{\\frac{3}{y}} = \\frac{1}{x^3} \cdot \\frac{y}{3} = \\frac{y}{3x^3}\\)</p>
+                                        <p>Now apply the outer exponent -2:</p>
+                                        <p>\\((\\frac{y}{3x^3})^{-2}\\)</p>
+                                        <p>Using the rule \\((\frac{a}{b})^{-n} = (\\frac{b}{a})^n\\):</p>
+                                        <p>\\(= (\\frac{3x^3}{y})^2\\)</p>
+                                        <p>Apply the power to numerator and denominator: \\(\\frac{(3x^3)^2}{y^2} = \\frac{3^2 (x^3)^2}{y^2} = \\frac{9x^{3 \cdot 2}}{y^2} = \\frac{9x^6}{y^2}\\)</p>
+                                        <p>Method 2: Distribute the outer exponent first.</p>
+                                        <p>\\((\\frac{x^{-3}}{3y^{-1}})^{-2} = \\frac{(x^{-3})^{-2}}{(3y^{-1})^{-2}} = \\frac{x^{(-3)(-2)}}{3^{-2}(y^{-1})^{-2}} = \\frac{x^6}{3^{-2}y^2}\\)</p>
+                                        <p>Since \\(3^{-2} = \\frac{1}{3^2} = \\frac{1}{9}\\):</p>
+                                        <p>\\(\\frac{x^6}{\\frac{1}{9}y^2} = x^6 \cdot \\frac{9}{y^2} = \\frac{9x^6}{y^2}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{9x^6}{y^2}\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 8: Simplify Square Root</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Simplify: \\(\\sqrt{64x^{8}y^{4}}\\). Assume all variables under the radical are positive.</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Use the property \\(\\sqrt{abc} = \\sqrt{a}\\sqrt{b}\\sqrt{c}\\):</p>
+                                        <p>\\(\\sqrt{64} \cdot \\sqrt{x^8} \cdot \\sqrt{y^4}\\)</p>
+                                        <p>Simplify each part:</p>
+                                        <p>\\(\\sqrt{64} = 8\\)</p>
+                                        <p>\\(\\sqrt{x^8} = x^{8/2} = x^4\\)</p>
+                                        <p>\\(\\sqrt{y^4} = y^{4/2} = y^2\\)</p>
+                                        <p>Combine the results:</p>
+                                        <p>\\(8x^4y^2\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(8x^4y^2\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Problem 9 (*): Simplify Cube Root of Fraction</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Simplify: \\(\\sqrt[3]{\\frac{125z^{13}}{27z^{10}}}\\). Assume all variables under the radical are positive.</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Simplify the expression inside the cube root first using the quotient rule for exponents.</p>
+                                        <p>\\(\\frac{125z^{13}}{27z^{10}} = \\frac{125}{27} \cdot \\frac{z^{13}}{z^{10}} = \\frac{125}{27} \cdot z^{13-10} = \\frac{125}{27} z^3\\)</p>
+                                        <p>Step 2: Take the cube root of the simplified expression.</p>
+                                        <p>\\(\\sqrt[3]{\\frac{125z^3}{27}} = \\frac{\\sqrt[3]{125z^3}}{\\sqrt[3]{27}}\\)</p>
+                                        <p>Step 3: Evaluate the cube roots of the numerator and denominator separately.</p>
+                                        <p>\\(\\sqrt[3]{125z^3} = \\sqrt[3]{125} \\cdot \\sqrt[3]{z^3} = 5 \\cdot z^{3/3} = 5z\\)</p>
+                                        <p>\\(\\sqrt[3]{27} = 3\\)</p>
+                                        <p>Combine the results:</p>
+                                        <p>\\(\\frac{5z}{3}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{5z}{3}\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            { 
+                id: "hw4",
+                title: "Homework 4", 
+                contentHTML: function() {
+                    return `
+                        <div class="assignment-document">
+                            <h2>Homework 4 :: Advanced Factoring & Simplification Protocols</h2>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 1: Factor \\(x^{2}-x-56\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully factor the expression: \\(x^2-x-56\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>We are looking for two numbers that multiply to -56 and add to -1 (the coefficient of the x term).</p>
+                                        <p>Consider pairs of factors for -56: (1, -56), (-1, 56), (2, -28), (-2, 28), (4, -14), (-4, 14), (7, -8), (-7, 8).</p>
+                                        <p>Check their sums:</p>
+                                        <p>1 + (-56) = -55</p>
+                                        <p>-1 + 56 = 55</p>
+                                        <p>2 + (-28) = -26</p>
+                                        <p>-2 + 28 = 26</p>
+                                        <p>4 + (-14) = -10</p>
+                                        <p>-4 + 14 = 10</p>
+                                        <p>7 + (-8) = -1</p>
+                                        <p>-7 + 8 = 1</p>
+                                        <p>The numbers are 7 and -8.</p>
+                                        <p>So, the factored form is \\((x+7)(x-8)\\).</p>
+                                        <p><strong>Final Answer:</strong> \\((x+7)(x-8)\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Problem 2: Factor \\(y^{4}-16\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully factor the expression: \\(y^4-16\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Recognize this as a difference of squares, where \\(y^4 = (y^2)^2\\) and \\(16 = 4^2\\).</p>
+                                        <p>Using \\(a^2 - b^2 = (a-b)(a+b)\\), with \\(a=y^2\\) and \\(b=4\\):</p>
+                                        <p>\\(y^4-16 = (y^2-4)(y^2+4)\\)</p>
+                                        <p>Step 2: The term \\((y^2-4)\\) is also a difference of squares, where \\(y^2 = y^2\\) and \\(4 = 2^2\\).</p>
+                                        <p>So, \\(y^2-4 = (y-2)(y+2)\\).</p>
+                                        <p>Step 3: The term \\((y^2+4)\\) is a sum of squares and cannot be factored further over real numbers (or with integer coefficients).</p>
+                                        <p>Combine all factors:</p>
+                                        <p><strong>Final Answer:</strong> \\((y-2)(y+2)(y^2+4)\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-3">
+                                <div class="collapsible-header">Problem 3 (*): Factor \\(63n^{3}+54n^{2}-105n-90\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully factor: \\(63n^{3}+54n^{2}-105n-90\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Look for a Greatest Common Factor (GCF) for all terms.</p>
+                                        <p>Coefficients: 63, 54, -105, -90.</p>
+                                        <p>Divisibility by 3: 6+3=9 (yes), 5+4=9 (yes), 1+0+5=6 (yes), 9+0=9 (yes). So 3 is a common factor.</p>
+                                        <p>Divisibility by 9: 63/9=7, 54/9=6, 105/9 is not an integer, 90/9=10. So 9 is not a GCF for all.</p>
+                                        <p>The GCF of the coefficients is 3.</p>
+                                        <p>Factor out 3: \\(3(21n^3 + 18n^2 - 35n - 30)\\)</p>
+                                        <p>Step 2: Factor the polynomial inside the parenthesis, \\(21n^3 + 18n^2 - 35n - 30\\), by grouping.</p>
+                                        <p>Group the first two terms and the last two terms: \\((21n^3 + 18n^2) + (-35n - 30)\\)</p>
+                                        <p>Factor out the GCF from each group:</p>
+                                        <p>From \\(21n^3 + 18n^2\\), GCF is \\(3n^2\\): \\(3n^2(7n + 6)\\)</p>
+                                        <p>From \\(-35n - 30\\), GCF is \\(-5\\): \\(-5(7n + 6)\\)</p>
+                                        <p>So, \\(3n^2(7n + 6) - 5(7n + 6)\\)</p>
+                                        <p>Step 3: Factor out the common binomial factor \\((7n+6)\\).</p>
+                                        <p>\\((7n+6)(3n^2-5)\\)</p>
+                                        <p>Step 4: Combine with the initial GCF (3).</p>
+                                        <p>\\(3(7n+6)(3n^2-5)\\)</p>
+                                        <p>The term \\(3n^2-5\\) cannot be factored further using integers as it's not a difference of perfect squares (5 is not a perfect square).</p>
+                                        <p><strong>Final Answer:</strong> \\(3(7n+6)(3n^2-5)\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="collapsible-section color-4">
+                                <div class="collapsible-header">Problem 4 (*): Factor \\(32x^{3}+48x^{2}-162x-243\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully factor: \\(32x^{3}+48x^{2}-162x-243\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Look for a GCF. For coefficients 32, 48, -162, -243, there is no common integer factor other than 1 or -1. (32=2^5, 48=3*16, 162=2*81, 243=3^5)</p>
+                                        <p>Step 2: Factor by grouping.</p>
+                                        <p>Group the first two terms and the last two terms: \\((32x^3+48x^2) + (-162x-243)\\)</p>
+                                        <p>Factor out the GCF from each group:</p>
+                                        <p>From \\(32x^3+48x^2\\), GCF is \\(16x^2\\): \\(16x^2(2x+3)\\)</p>
+                                        <p>From \\(-162x-243\\), GCF is \\(-81\\): \\(-81(2x+3)\\)</p>
+                                        <p>Combine: \\(16x^2(2x+3) - 81(2x+3)\\)</p>
+                                        <p>Step 3: Factor out the common binomial factor \\((2x+3)\\).</p>
+                                        <p>\\((2x+3)(16x^2-81)\\)</p>
+                                        <p>Step 4: The term \\(16x^2-81\\) is a difference of squares: \\((4x)^2 - 9^2\\).</p>
+                                        <p>Factor it as \\((4x-9)(4x+9)\\).</p>
+                                        <p>Step 5: Combine all factors.</p>
+                                        <p><strong>Final Answer:</strong> \\((2x+3)(4x-9)(4x+9)\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-5">
+                                <div class="collapsible-header">Problem 5 (*): Factor \\(16x^{3}-81x\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully factor: \\(16x^{3}-81x\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor out the Greatest Common Factor (GCF), which is \\(x\\).</p>
+                                        <p>\\(x(16x^2-81)\\)</p>
+                                        <p>Step 2: The term \\(16x^2-81\\) in the parenthesis is a difference of squares, as \\(16x^2 = (4x)^2\\) and \\(81 = 9^2\\).</p>
+                                        <p>Using \\(a^2 - b^2 = (a-b)(a+b)\\), with \\(a=4x\\) and \\(b=9\\):</p>
+                                        <p>\\(16x^2-81 = (4x-9)(4x+9)\\)</p>
+                                        <p>Step 3: Combine all factors.</p>
+                                        <p><strong>Final Answer:</strong> \\(x(4x-9)(4x+9)\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-6">
+                                <div class="collapsible-header">Problem 6 (*): Factor \\(6x^{2}-5x-6\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully factor: \\(6x^{2}-5x-6\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Using the AC method, where \\(A=6, B=-5, C=-6\\).</p>
+                                        <p>Step 1: Multiply A and C: \\(A \\cdot C = 6 \\cdot (-6) = -36\\).</p>
+                                        <p>Step 2: Find two numbers that multiply to -36 and add to B (which is -5).</p>
+                                        <p>Consider pairs of factors for -36: (1, -36), (-1, 36), (2, -18), (-2, 18), (3, -12), (-3, 12), (4, -9), (-4, 9), (6, -6).</p>
+                                        <p>Check their sums. The pair 4 and -9 adds to \\(4 + (-9) = -5\\).</p>
+                                        <p>Step 3: Rewrite the middle term (\\(-5x\\)) using these two numbers: \\(4x - 9x\\).</p>
+                                        <p>\\(6x^2 + 4x - 9x - 6\\)</p>
+                                        <p>Step 4: Factor by grouping.</p>
+                                        <p>Group the first two terms and the last two terms: \\((6x^2 + 4x) + (-9x - 6)\\)</p>
+                                        <p>Factor out GCF from each group:</p>
+                                        <p>From \\(6x^2 + 4x\\), GCF is \\(2x\\): \\(2x(3x+2)\\)</p>
+                                        <p>From \\(-9x - 6\\), GCF is \\(-3\\): \\(-3(3x+2)\\)</p>
+                                        <p>So, \\(2x(3x+2) - 3(3x+2)\\)</p>
+                                        <p>Step 5: Factor out the common binomial factor \\((3x+2)\\).</p>
+                                        <p>\\((3x+2)(2x-3)\\)</p>
+                                        <p><strong>Final Answer:</strong> \\((2x-3)(3x+2)\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-7">
+                                <div class="collapsible-header">Problem 7: Simplify \\(\\frac{y^{2}+10y+25}{y^{2}+11y+30}\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{y^{2}+10y+25}{y^{2}+11y+30}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor the numerator.</p>
+                                        <p>\\(y^2+10y+25\\) is a perfect square trinomial: \\((y)^2 + 2(y)(5) + (5)^2 = (y+5)^2\\).</p>
+                                        <p>Step 2: Factor the denominator.</p>
+                                        <p>For \\(y^2+11y+30\\), we need two numbers that multiply to 30 and add to 11. These are 5 and 6.</p>
+                                        <p>So, \\(y^2+11y+30 = (y+5)(y+6)\\).</p>
+                                        <p>Step 3: Rewrite the expression with factored forms.</p>
+                                        <p>\\(\\frac{(y+5)(y+5)}{(y+5)(y+6)}\\)</p>
+                                        <p>Step 4: Cancel the common factor \\((y+5)\\) from the numerator and denominator, noting that \\(y \\neq -5\\).</p>
+                                        <p>\\(\\frac{y+5}{y+6}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{y+5}{y+6}\\) (Restrictions: \\(y \\neq -5, y \\neq -6\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 8: Simplify \\(\\frac{v^{2}-5v-14}{v^{2}+4v+4}\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{v^{2}-5v-14}{v^{2}+4v+4}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor the numerator \\(v^2-5v-14\\).</p>
+                                        <p>We need two numbers that multiply to -14 and add to -5. These are -7 and 2.</p>
+                                        <p>So, \\(v^2-5v-14 = (v-7)(v+2)\\).</p>
+                                        <p>Step 2: Factor the denominator \\(v^2+4v+4\\).</p>
+                                        <p>This is a perfect square trinomial: \\((v)^2 + 2(v)(2) + (2)^2 = (v+2)^2\\).</p>
+                                        <p>Step 3: Rewrite the expression with factored forms.</p>
+                                        <p>\\(\\frac{(v-7)(v+2)}{(v+2)(v+2)}\\)</p>
+                                        <p>Step 4: Cancel one common factor \\((v+2)\\) from the numerator and denominator, noting that \\(v \\neq -2\\).</p>
+                                        <p>\\(\\frac{v-7}{v+2}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{v-7}{v+2}\\) (Restrictions: \\(v \\neq -2\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Problem 9: Simplify \\(\\frac{x^{3}-x^{2}-42x}{2x^{2}-20x+42}\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{x^{3}-x^{2}-42x}{2x^{2}-20x+42}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor the numerator \\(x^3-x^2-42x\\).</p>
+                                        <p>First, factor out the GCF, which is \\(x\\): \\(x(x^2-x-42)\\).</p>
+                                        <p>Then, factor the quadratic \\(x^2-x-42\\). We need two numbers that multiply to -42 and add to -1. These are -7 and 6.</p>
+                                        <p>So, numerator is \\(x(x-7)(x+6)\\).</p>
+                                        <p>Step 2: Factor the denominator \\(2x^2-20x+42\\).</p>
+                                        <p>First, factor out the GCF, which is 2: \\(2(x^2-10x+21)\\).</p>
+                                        <p>Then, factor the quadratic \\(x^2-10x+21\\). We need two numbers that multiply to 21 and add to -10. These are -7 and -3.</p>
+                                        <p>So, denominator is \\(2(x-7)(x-3)\\).</p>
+                                        <p>Step 3: Rewrite the expression with factored forms.</p>
+                                        <p>\\(\\frac{x(x-7)(x+6)}{2(x-7)(x-3)}\\)</p>
+                                        <p>Step 4: Cancel the common factor \\((x-7)\\), noting that \\(x \\neq 7\\).</p>
+                                        <p>\\(\\frac{x(x+6)}{2(x-3)}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{x(x+6)}{2(x-3)}\\) (Restrictions: \\(x \\neq 7, x \\neq 3\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-3">
+                                <div class="collapsible-header">Problem 10: Simplify \\(\\frac{9y^{2}+81y}{y^{3}+8y^{2}-9y}\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{9y^{2}+81y}{y^{3}+8y^{2}-9y}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor the numerator \\(9y^2+81y\\).</p>
+                                        <p>GCF is \\(9y\\): \\(9y(y+9)\\).</p>
+                                        <p>Step 2: Factor the denominator \\(y^3+8y^2-9y\\).</p>
+                                        <p>GCF is \\(y\\): \\(y(y^2+8y-9)\\).</p>
+                                        <p>Factor the quadratic \\(y^2+8y-9\\). We need two numbers that multiply to -9 and add to 8. These are 9 and -1.</p>
+                                        <p>So, denominator is \\(y(y+9)(y-1)\\).</p>
+                                        <p>Step 3: Rewrite the expression with factored forms.</p>
+                                        <p>\\(\\frac{9y(y+9)}{y(y+9)(y-1)}\\)</p>
+                                        <p>Step 4: Cancel common factors \\(y\\) and \\((y+9)\\), noting that \\(y \\neq 0\\) and \\(y \\neq -9\\).</p>
+                                        <p>\\(\\frac{9}{y-1}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{9}{y-1}\\) (Restrictions: \\(y \\neq 0, y \\neq -9, y \\neq 1\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+             { 
+                id: "hw5",
+                title: "Homework 5", 
+                contentHTML: function() {
+                    return `
+                        <div class="assignment-document">
+                            <h2>Homework 5 :: Rational Operations & Coordinate Geometry</h2>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 1: Simplify Rational Expression</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{x^{3}-x^{2}-42x}{2x^{2}-20x+42}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor the numerator \\(x^3-x^2-42x\\).</p>
+                                        <p>GCF is \\(x\\): \\(x(x^2-x-42)\\).</p>
+                                        <p>Factor \\(x^2-x-42\\): Find two numbers that multiply to -42 and add to -1. These are -7 and 6.</p>
+                                        <p>Numerator: \\(x(x-7)(x+6)\\).</p>
+                                        <p>Step 2: Factor the denominator \\(2x^2-20x+42\\).</p>
+                                        <p>GCF is 2: \\(2(x^2-10x+21)\\).</p>
+                                        <p>Factor \\(x^2-10x+21\\): Find two numbers that multiply to 21 and add to -10. These are -7 and -3.</p>
+                                        <p>Denominator: \\(2(x-7)(x-3)\\).</p>
+                                        <p>Step 3: Rewrite the expression and cancel common factors.</p>
+                                        <p>\\(\\frac{x(x-7)(x+6)}{2(x-7)(x-3)}\\)</p>
+                                        <p>Cancel \\((x-7)\\), assuming \\(x \\neq 7\\):</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{x(x+6)}{2(x-3)}\\) (Restrictions: \\(x \\neq 7, x \\neq 3\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Problem 2: Simplify Rational Expression</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{9y^{2}+81y}{y^{3}+8y^{2}-9y}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor the numerator \\(9y^2+81y\\).</p>
+                                        <p>GCF is \\(9y\\): \\(9y(y+9)\\).</p>
+                                        <p>Step 2: Factor the denominator \\(y^3+8y^2-9y\\).</p>
+                                        <p>GCF is \\(y\\): \\(y(y^2+8y-9)\\).</p>
+                                        <p>Factor \\(y^2+8y-9\\): Find two numbers that multiply to -9 and add to 8. These are 9 and -1.</p>
+                                        <p>Denominator: \\(y(y+9)(y-1)\\).</p>
+                                        <p>Step 3: Rewrite the expression and cancel common factors.</p>
+                                        <p>\\(\\frac{9y(y+9)}{y(y+9)(y-1)}\\)</p>
+                                        <p>Cancel \\(y\\) (assuming \\(y \\neq 0\\)) and \\((y+9)\\) (assuming \\(y \\neq -9\\)):</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{9}{y-1}\\) (Restrictions: \\(y \\neq 0, y \\neq -9, y \\neq 1\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-3">
+                                <div class="collapsible-header">Problem 3: Multiply Rational Expressions</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{1}{p-9} \\cdot \\frac{p^{2}+6p-27}{p+9}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor the quadratic \\(p^2+6p-27\\).</p>
+                                        <p>Find two numbers that multiply to -27 and add to 6. These are 9 and -3.</p>
+                                        <p>So, \\(p^2+6p-27 = (p+9)(p-3)\\).</p>
+                                        <p>Step 2: Rewrite the expression with the factored form.</p>
+                                        <p>\\(\\frac{1}{p-9} \\cdot \\frac{(p+9)(p-3)}{p+9}\\)</p>
+                                        <p>Step 3: Cancel the common factor \\((p+9)\\), assuming \\(p \\neq -9\\).</p>
+                                        <p>\\(\\frac{1}{p-9} \cdot (p-3) = \\frac{p-3}{p-9}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{p-3}{p-9}\\) (Restrictions: \\(p \\neq 9, p \\neq -9\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-4">
+                                <div class="collapsible-header">Problem 4: Divide Rational Expressions</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{x^{2}-5x-6}{2x+6} \\div \\frac{x^{2}-3x-4}{4x+12}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Rewrite division as multiplication by the reciprocal.</p>
+                                        <p>\\(\\frac{x^2-5x-6}{2x+6} \\cdot \\frac{4x+12}{x^2-3x-4}\\)</p>
+                                        <p>Step 2: Factor all polynomials.</p>
+                                        <p>\\(x^2-5x-6 = (x-6)(x+1)\\) (numbers multiply to -6, add to -5 are -6, 1)</p>
+                                        <p>\\(2x+6 = 2(x+3)\\)</p>
+                                        <p>\\(4x+12 = 4(x+3)\\)</p>
+                                        <p>\\(x^2-3x-4 = (x-4)(x+1)\\) (numbers multiply to -4, add to -3 are -4, 1)</p>
+                                        <p>Step 3: Substitute factored forms into the expression.</p>
+                                        <p>\\(\\frac{(x-6)(x+1)}{2(x+3)} \\cdot \\frac{4(x+3)}{(x-4)(x+1)}\\)</p>
+                                        <p>Step 4: Cancel common factors.</p>
+                                        <p>Cancel \\((x+1)\\) (assuming \\(x \\neq -1\\)).</p>
+                                        <p>Cancel \\((x+3)\\) (assuming \\(x \\neq -3\\)).</p>
+                                        <p>Simplify \\(\\frac{4}{2} = 2\\).</p>
+                                        <p>Remaining terms: \\(\\frac{x-6}{1} \cdot \\frac{2}{x-4}\\)</p>
+                                        <p>\\(= \\frac{2(x-6)}{x-4}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{2(x-6)}{x-4}\\) (Restrictions: \\(x \\neq -3, x \\neq -1, x \\neq 4\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-5">
+                                <div class="collapsible-header">Problem 5 (*): Divide Complex Rational Expressions</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{10x^{2}-28x+16}{2x-4} \\div \\frac{25x^{2}-25x+4}{5x^{2}-41x+8}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Rewrite division as multiplication by the reciprocal.</p>
+                                        <p>\\(\\frac{10x^2-28x+16}{2x-4} \\cdot \\frac{5x^2-41x+8}{25x^2-25x+4}\\)</p>
+                                        <p>Step 2: Factor each polynomial.</p>
+                                        <p>\\(10x^2-28x+16 = 2(5x^2-14x+8)\\). Factor \\(5x^2-14x+8\\): AC method, \\(5 \cdot 8 = 40\\). Numbers that multiply to 40 and add to -14 are -10 and -4. \\(5x^2-10x-4x+8 = 5x(x-2)-4(x-2) = (5x-4)(x-2)\\). So, \\(10x^2-28x+16 = 2(5x-4)(x-2)\\).</p>
+                                        <p>\\(2x-4 = 2(x-2)\\)</p>
+                                        <p>\\(5x^2-41x+8\\): AC method, \\(5 \cdot 8 = 40\\). Numbers that multiply to 40 and add to -41 are -40 and -1. \\(5x^2-40x-x+8 = 5x(x-8)-1(x-8) = (5x-1)(x-8)\\).</p>
+                                        <p>\\(25x^2-25x+4\\): This is a perfect square trinomial or factorable by AC. \\((5x)^2 - 2(5x)(?) + (?)^2\\). Let's use AC: \\(25 \cdot 4 = 100\\). Numbers that multiply to 100 and add to -25 are -20 and -5. \\(25x^2-20x-5x+4 = 5x(5x-4)-1(5x-4) = (5x-1)(5x-4)\\).</p>
+                                        <p>Step 3: Substitute factored forms.</p>
+                                        <p>\\(\\frac{2(5x-4)(x-2)}{2(x-2)} \\cdot \\frac{(5x-1)(x-8)}{(5x-1)(5x-4)}\\)</p>
+                                        <p>Step 4: Cancel common factors.</p>
+                                        <p>Cancel 2.</p>
+                                        <p>Cancel \\((x-2)\\) (assuming \\(x \\neq 2\\)).</p>
+                                        <p>Cancel \\((5x-4)\\) (assuming \\(x \\neq 4/5\\)).</p>
+                                        <p>Cancel \\((5x-1)\\) (assuming \\(x \\neq 1/5\\)).</p>
+                                        <p>Remaining: \\(\\frac{1}{1} \\cdot \\frac{x-8}{1} = x-8\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(x-8\\) (Restrictions: \\(x \\neq 2, x \\neq 4/5, x \\neq 1/5\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-6">
+                                <div class="collapsible-header">Problem 6: Add Rational Expressions</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{2}{4x+12} + \\frac{7}{x+3}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor denominators.</p>
+                                        <p>\\(4x+12 = 4(x+3)\\)</p>
+                                        <p>The expression is \\(\\frac{2}{4(x+3)} + \\frac{7}{x+3}\\).</p>
+                                        <p>Step 2: Simplify the first fraction if possible.</p>
+                                        <p>\\(\\frac{2}{4(x+3)} = \\frac{1}{2(x+3)}\\)</p>
+                                        <p>Expression becomes: \\(\\frac{1}{2(x+3)} + \\frac{7}{x+3}\\)</p>
+                                        <p>Step 3: Find the LCD, which is \\(2(x+3)\\).</p>
+                                        <p>Step 4: Rewrite the second fraction with the LCD.</p>
+                                        <p>\\(\\frac{7}{x+3} = \\frac{7 \cdot 2}{(x+3) \cdot 2} = \\frac{14}{2(x+3)}\\)</p>
+                                        <p>Step 5: Add the fractions.</p>
+                                        <p>\\(\\frac{1}{2(x+3)} + \\frac{14}{2(x+3)} = \\frac{1+14}{2(x+3)} = \\frac{15}{2(x+3)}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{15}{2(x+3)}\\) (Restriction: \\(x \\neq -3\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="collapsible-section color-7">
+                                <div class="collapsible-header">Problem 7: Add Rational Expressions</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Fully simplify: \\(\\frac{3}{y+5} + \\frac{y}{y^{2}+7y+10}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Factor the second denominator \\(y^2+7y+10\\).</p>
+                                        <p>Find two numbers that multiply to 10 and add to 7. These are 5 and 2.</p>
+                                        <p>So, \\(y^2+7y+10 = (y+5)(y+2)\\).</p>
+                                        <p>Step 2: Rewrite the expression.</p>
+                                        <p>\\(\\frac{3}{y+5} + \\frac{y}{(y+5)(y+2)}\\)</p>
+                                        <p>Step 3: Find the LCD, which is \\((y+5)(y+2)\\).</p>
+                                        <p>Step 4: Rewrite the first fraction with the LCD.</p>
+                                        <p>\\(\\frac{3}{y+5} = \\frac{3(y+2)}{(y+5)(y+2)}\\)</p>
+                                        <p>Step 5: Add the fractions.</p>
+                                        <p>\\(\\frac{3(y+2)}{(y+5)(y+2)} + \\frac{y}{(y+5)(y+2)} = \\frac{3(y+2)+y}{(y+5)(y+2)}\\)</p>
+                                        <p>\\(= \\frac{3y+6+y}{(y+5)(y+2)}\\)</p>
+                                        <p>\\(= \\frac{4y+6}{(y+5)(y+2)}\\)</p>
+                                        <p>Step 6: Factor the numerator if possible for further simplification. \\(4y+6 = 2(2y+3)\\).</p>
+                                        <p>No common factors with the denominator.</p>
+                                        <p><strong>Final Answer:</strong> \\(\\frac{4y+6}{(y+5)(y+2)}\\) or \\(\\frac{2(2y+3)}{(y+5)(y+2)}\\) (Restrictions: \\(y \\neq -5, y \\neq -2\\))</p>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 8: Distance and Midpoint Calculations</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Formulas:</strong></p>
+                                    <p>Distance: \\(d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}\\)</p>
+                                    <p>Midpoint: \\(M = (\\frac{x_1+x_2}{2}, \\frac{y_1+y_2}{2})\\)</p>
+                                    <hr class="my-2 border-[var(--terminal-dim-text)]">
+                                    <p><strong>(a) Points (5,0) and (5,6)</strong></p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Let \\((x_1,y_1)=(5,0)\\) and \\((x_2,y_2)=(5,6)\\).</p>
+                                        <p>Distance: \\(d = \\sqrt{(5-5)^2 + (6-0)^2} = \\sqrt{0^2 + 6^2} = \\sqrt{0 + 36} = \\sqrt{36} = 6\\)</p>
+                                        <p>Midpoint: \\(M = (\\frac{5+5}{2}, \\frac{0+6}{2}) = (\\frac{10}{2}, \\frac{6}{2}) = (5,3)\\)</p>
+                                        <p><strong>Answers:</strong> Distance = 6, Midpoint = (5,3)</p>
+                                    </div>
+                                    <hr class="my-2 border-[var(--terminal-dim-text)]">
+                                    <p><strong>(b) Points (1,2) and (5,-2)</strong></p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Let \\((x_1,y_1)=(1,2)\\) and \\((x_2,y_2)=(5,-2)\\).</p>
+                                        <p>Distance: \\(d = \\sqrt{(5-1)^2 + (-2-2)^2} = \\sqrt{4^2 + (-4)^2} = \\sqrt{16+16} = \\sqrt{32}\\)</p>
+                                        <p>Simplify \\(\\sqrt{32}\\): \\(\\sqrt{16 \\cdot 2} = \\sqrt{16} \\cdot \\sqrt{2} = 4\\sqrt{2}\\)</p>
+                                        <p>Midpoint: \\(M = (\\frac{1+5}{2}, \\frac{2+(-2)}{2}) = (\\frac{6}{2}, \\frac{0}{2}) = (3,0)\\)</p>
+                                        <p><strong>Answers:</strong> Distance = \\(4\\sqrt{2}\\), Midpoint = (3,0)</p>
+                                    </div>
+                                    <hr class="my-2 border-[var(--terminal-dim-text)]">
+                                    <p><strong>(c) Points (0,7) and (4,-9)</strong></p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Let \\((x_1,y_1)=(0,7)\\) and \\((x_2,y_2)=(4,-9)\\).</p>
+                                        <p>Distance: \\(d = \\sqrt{(4-0)^2 + (-9-7)^2} = \\sqrt{4^2 + (-16)^2} = \\sqrt{16+256} = \\sqrt{272}\\)</p>
+                                        <p>Simplify \\(\\sqrt{272}\\): \\(272 = 4 \\cdot 68 = 4 \cdot 4 \cdot 17 = 16 \cdot 17\\). So, \\(\\sqrt{272} = \\sqrt{16 \\cdot 17} = 4\\sqrt{17}\\)</p>
+                                        <p>Midpoint: \\(M = (\\frac{0+4}{2}, \\frac{7+(-9)}{2}) = (\\frac{4}{2}, \\frac{-2}{2}) = (2,-1)\\)</p>
+                                        <p><strong>Answers:</strong> Distance = \\(4\\sqrt{17}\\), Midpoint = (2,-1)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            { 
+                id: "hw6",
+                title: "Homework 6", 
+                contentHTML: function() {
+                    return `
+                        <div class="assignment-document">
+                            <h2>Homework 6 :: Intercepts & Graphing Analysis</h2>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Section 1, Problem 1a: Intercepts for \\(3x+2y=10\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Equation:</strong> \\(3x+2y=10\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>To find the <strong>x-intercept</strong>, set \\(y=0\\):</p>
+                                        <p>\\(3x + 2(0) = 10\\)</p>
+                                        <p>\\(3x = 10\\)</p>
+                                        <p>\\(x = \\frac{10}{3}\\)</p>
+                                        <p>The x-intercept is \\((\\frac{10}{3}, 0)\\).</p>
+                                        <p>To find the <strong>y-intercept</strong>, set \\(x=0\\):</p>
+                                        <p>\\(3(0) + 2y = 10\\)</p>
+                                        <p>\\(2y = 10\\)</p>
+                                        <p>\\(y = 5\\)</p>
+                                        <p>The y-intercept is \\((0, 5)\\).</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Section 1, Problem 1b: Intercepts for \\(4x-3y=2\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Equation:</strong> \\(4x-3y=2\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>To find the <strong>x-intercept</strong>, set \\(y=0\\):</p>
+                                        <p>\\(4x - 3(0) = 2\\)</p>
+                                        <p>\\(4x = 2\\)</p>
+                                        <p>\\(x = \\frac{2}{4} = \\frac{1}{2}\\)</p>
+                                        <p>The x-intercept is \\((\\frac{1}{2}, 0)\\).</p>
+                                        <p>To find the <strong>y-intercept</strong>, set \\(x=0\\):</p>
+                                        <p>\\(4(0) - 3y = 2\\)</p>
+                                        <p>\\(-3y = 2\\)</p>
+                                        <p>\\(y = -\\frac{2}{3}\\)</p>
+                                        <p>The y-intercept is \\((0, -\\frac{2}{3})\\).</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-3">
+                                <div class="collapsible-header">Section 1, Problem 1c: Intercepts for \\(2x - \\frac{2}{3} = \\frac{3}{4}y + 3\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Equation:</strong> \\(2x - \\frac{2}{3} = \\frac{3}{4}y + 3\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Rearrange the equation to group variable terms on one side and constants on the other. It's common to get it into \\(Ax + By = C\\) form.</p>
+                                        <p>\\(2x - \\frac{3}{4}y = 3 + \\frac{2}{3}\\)</p>
+                                        <p>Step 2: Combine the constants on the right side. The common denominator for 3 (or \\(\\frac{3}{1}\\)) and \\(\\frac{2}{3}\\) is 3.</p>
+                                        <p>\\(3 + \\frac{2}{3} = \\frac{3 \cdot 3}{1 \cdot 3} + \\frac{2}{3} = \\frac{9}{3} + \\frac{2}{3} = \\frac{11}{3}\\)</p>
+                                        <p>So the equation is: \\(2x - \\frac{3}{4}y = \\frac{11}{3}\\)</p>
+                                        <p>Step 3: To find the <strong>x-intercept</strong>, set \\(y=0\\):</p>
+                                        <p>\\(2x - \\frac{3}{4}(0) = \\frac{11}{3}\\)</p>
+                                        <p>\\(2x = \\frac{11}{3}\\)</p>
+                                        <p>\\(x = \\frac{11}{3} \\div 2 = \\frac{11}{3} \\cdot \\frac{1}{2} = \\frac{11}{6}\\)</p>
+                                        <p>The x-intercept is \\((\\frac{11}{6}, 0)\\).</p>
+                                        <p>Step 4: To find the <strong>y-intercept</strong>, set \\(x=0\\):</p>
+                                        <p>\\(2(0) - \\frac{3}{4}y = \\frac{11}{3}\\)</p>
+                                        <p>\\(-\\frac{3}{4}y = \\frac{11}{3}\\)</p>
+                                        <p>Multiply both sides by \\(-\\frac{4}{3}\\) to solve for y:</p>
+                                        <p>\\(y = \\frac{11}{3} \\cdot (-\\frac{4}{3}) = -\\frac{44}{9}\\)</p>
+                                        <p>The y-intercept is \\((0, -\\frac{44}{9})\\).</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-4">
+                                <div class="collapsible-header">Section 2, Problem 2a: Graphing \\(y=\\frac{1}{2}x+3\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Equation:</strong> \\(y=\\frac{1}{2}x+3\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Details for Graphing:</strong></p>
+                                        <p>This is a linear equation in slope-intercept form \\(y = mx + b\\), where \\(m\\) is the slope and \\(b\\) is the y-intercept.</p>
+                                        <p>Slope \\(m = \\frac{1}{2}\\)</p>
+                                        <p>y-intercept: Set \\(x=0 \\Rightarrow y = \\frac{1}{2}(0) + 3 = 3\\). Point: \\((0, 3)\\).</p>
+                                        <p>x-intercept: Set \\(y=0 \\Rightarrow 0 = \\frac{1}{2}x + 3 \\Rightarrow -3 = \\frac{1}{2}x \\Rightarrow x = -6\\). Point: \\((-6, 0)\\).</p>
+                                        <div class="graph-container">
+                                            <canvas id="hw6Sec2Prob1Chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="collapsible-section color-5">
+                                <div class="collapsible-header">Section 2, Problem 2b: Graphing \\(10x-5y=15\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Equation:</strong> \\(10x-5y=15\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Details for Graphing:</strong></p>
+                                        <p>First, simplify the equation by dividing all terms by 5: \\(2x-y=3\\).</p>
+                                        <p>Rewrite in slope-intercept form (\\(y=mx+b\\)): \\(y = 2x-3\\).</p>
+                                        <p>Slope \\(m = 2\\)</p>
+                                        <p>y-intercept: Set \\(x=0 \\Rightarrow y = 2(0)-3 = -3\\). Point: \\((0, -3)\\).</p>
+                                        <p>x-intercept: Set \\(y=0 \\Rightarrow 0 = 2x-3 \\Rightarrow 2x = 3 \\Rightarrow x = \\frac{3}{2}\\). Point: \\((\\frac{3}{2}, 0)\\) or \\((1.5, 0)\\).</p>
+                                        <div class="graph-container">
+                                            <canvas id="hw6Sec2Prob2Chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-6">
+                                <div class="collapsible-header">Section 3, Problem 3a: Matching Equation \\(y=-2x^2+3\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Equation:</strong> \\(y=-2x^2+3\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Analysis for Matching:</strong></p>
+                                        <p>This is a quadratic equation (\\(ax^2+bx+c\\)). Since the coefficient of \\(x^2\\) (which is -2) is negative, the parabola opens downwards.</p>
+                                        <p>Vertex: The x-coordinate of the vertex is \\(\\frac{-b}{2a}\\). Here \\(b=0\\), so \\(x_{vertex}=0\\).</p>
+                                        <p>When \\(x=0\\), \\(y = -2(0)^2+3 = 3\\). So, the vertex is at \\((0,3)\\).</p>
+                                        <p>y-intercept: This is the vertex, \\((0,3)\\).</p>
+                                        <p>x-intercepts (set \\(y=0\\)): \\(0 = -2x^2+3 \\Rightarrow 2x^2=3 \\Rightarrow x^2=\\frac{3}{2} \\Rightarrow x = \\pm\\sqrt{\\frac{3}{2}} = \\pm\\frac{\\sqrt{6}}{2} \\approx \\pm 1.22\\). Points are approx. \\((1.22, 0)\\) and \\((-1.22, 0)\\).</p>
+                                        <p>Other points: If \\(x=1, y=-2(1)^2+3=1\\). Point \\((1,1)\\). If \\(x=-1, y=-2(-1)^2+3=1\\). Point \\((-1,1)\\).</p>
+                                        <p>This matches <strong>Graph V</strong> from the provided image.</p>
+                                        <div class="graph-container">
+                                            <canvas id="hw6Sec3Prob1Chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-7">
+                                <div class="collapsible-header">Section 3, Problem 3b: Matching Equation \\(y=-2x+3\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Equation:</strong> \\(y=-2x+3\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Analysis for Matching:</strong></p>
+                                        <p>This is a linear equation in slope-intercept form \\(y=mx+b\\).</p>
+                                        <p>Slope \\(m = -2\\) (negative slope, so the line goes downwards from left to right).</p>
+                                        <p>y-intercept \\(b = 3\\). Point: \\((0,3)\\).</p>
+                                        <p>x-intercept (set \\(y=0\\)): \\(0 = -2x+3 \\Rightarrow 2x=3 \\Rightarrow x = \\frac{3}{2} = 1.5\\). Point: \\((1.5, 0)\\).</p>
+                                        <p>This matches <strong>Graph IV</strong> from the provided image.</p>
+                                        <div class="graph-container">
+                                            <canvas id="hw6Sec3Prob2Chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Section 3, Problem 3c: Matching Equation \\(y=x^2-1\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Equation:</strong> \\(y=x^2-1\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Analysis for Matching:</strong></p>
+                                        <p>This is a quadratic equation. Since the coefficient of \\(x^2\\) (which is 1) is positive, the parabola opens upwards.</p>
+                                        <p>Vertex: x-coordinate is \\(\\frac{-b}{2a} = \\frac{-0}{2(1)} = 0\\).</p>
+                                        <p>When \\(x=0\\), \\(y = (0)^2-1 = -1\\). So, the vertex is at \\((0,-1)\\).</p>
+                                        <p>y-intercept: This is the vertex, \\((0,-1)\\).</p>
+                                        <p>x-intercepts (set \\(y=0\\)): \\(0 = x^2-1 \\Rightarrow x^2=1 \\Rightarrow x = \\pm 1\\). Points: \\((1,0)\\) and \\((-1,0)\\).</p>
+                                        <p>This matches <strong>Graph II</strong> from the provided image.</p>
+                                        <div class="graph-container">
+                                            <canvas id="hw6Sec3Prob3Chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Section 3, Problem 3d: Matching Equation \\(xy=2\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Equation:</strong> \\(xy=2\\), which can be rewritten as \\(y = \\frac{2}{x}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Analysis for Matching:</strong></p>
+                                        <p>This is a reciprocal function, which graphs as a hyperbola with two branches.</p>
+                                        <p>Asymptotes: The x-axis (\\(y=0\\)) and y-axis (\\(x=0\\)) are asymptotes.</p>
+                                        <p>Key Points:</p>
+                                        <p>If \\(x=1, y=2/1=2\\). Point \\((1,2)\\).</p>
+                                        <p>If \\(x=2, y=2/2=1\\). Point \\((2,1)\\).</p>
+                                        <p>If \\(x=-1, y=2/(-1)=-2\\). Point \\((-1,-2)\\).</p>
+                                        <p>If \\(x=-2, y=2/(-2)=-1\\). Point \\((-2,-1)\\).</p>
+                                        <p>The branches are in the first and third quadrants.</p>
+                                        <p>This matches <strong>Graph III</strong> from the provided image.</p>
+                                        <div class="graph-container">
+                                            <canvas id="hw6Sec3Prob4Chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             <div class="collapsible-section color-3">
+                                <div class="collapsible-header">Section 3, Problem 3e: Matching Equation \\(y-2=\\frac{1}{2}x\\)</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Equation:</strong> \\(y-2=\\frac{1}{2}x\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Analysis for Matching:</strong></p>
+                                        <p>Rewrite in slope-intercept form (\\(y=mx+b\\)): \\(y = \\frac{1}{2}x + 2\\).</p>
+                                        <p>Slope \\(m = \\frac{1}{2}\\) (positive slope).</p>
+                                        <p>y-intercept \\(b = 2\\). Point: \\((0,2)\\).</p>
+                                        <p>x-intercept (set \\(y=0\\)): \\(0 = \\frac{1}{2}x+2 \\Rightarrow -2 = \\frac{1}{2}x \\Rightarrow x = -4\\). Point: \\((-4,0)\\).</p>
+                                        <p>This matches <strong>Graph I</strong> from the provided image.</p>
+                                        <div class="graph-container">
+                                            <canvas id="hw6Sec3Prob5Chart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            {
+                id: "quiz4",
+                title: "Quiz 4", 
+                contentHTML: function() { 
+                    return `
+                        <div class="assignment-document">
+                            <h2>Quiz 4 :: Spatial Coordinates Analysis</h2>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 1: Distance Between Points</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Find the distance between the points (-1,-2) and (3,4).</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Let the points be \\((x_1, y_1) = (-1, -2)\\) and \\((x_2, y_2) = (3, 4)\\).</p>
+                                        <p>The distance formula is \\(d = \\sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}\\).</p>
+                                        <p>Substitute the coordinates:</p>
+                                        <p>\\(d = \\sqrt{(3-(-1))^2 + (4-(-2))^2}\\)</p>
+                                        <p>\\(d = \\sqrt{(3+1)^2 + (4+2)^2}\\)</p>
+                                        <p>\\(d = \\sqrt{(4)^2 + (6)^2}\\)</p>
+                                        <p>\\(d = \\sqrt{16 + 36}\\)</p>
+                                        <p>\\(d = \\sqrt{52}\\)</p>
+                                        <p>To simplify \\(\\sqrt{52}\\), find the largest perfect square factor of 52. \\(52 = 4 \\cdot 13\\).</p>
+                                        <p>\\(d = \\sqrt{4 \\cdot 13} = \\sqrt{4} \\cdot \\sqrt{13} = 2\\sqrt{13}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(2\\sqrt{13}\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Problem 2: Midpoint Between Points</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Find the midpoint between the points (-1,-2) and (3,4).</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Let the points be \\((x_1, y_1) = (-1, -2)\\) and \\((x_2, y_2) = (3, 4)\\).</p>
+                                        <p>The midpoint formula is \\(M = (\\frac{x_1+x_2}{2}, \\frac{y_1+y_2}{2})\\).</p>
+                                        <p>Substitute the coordinates:</p>
+                                        <p>\\(M = (\\frac{-1+3}{2}, \\frac{-2+4}{2})\\)</p>
+                                        <p>\\(M = (\\frac{2}{2}, \\frac{2}{2})\\)</p>
+                                        <p>\\(M = (1,1)\\)</p>
+                                        <p><strong>Final Answer:</strong> \\((1,1)\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-3">
+                                <div class="collapsible-header">Problem 3: Midpoint of Intercepts</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Find the midpoint between the x and y intercepts of \\(2x+4y=-12\\).</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Find the x-intercept. Set \\(y=0\\) in the equation \\(2x+4y=-12\\).</p>
+                                        <p>\\(2x + 4(0) = -12\\)</p>
+                                        <p>\\(2x = -12\\)</p>
+                                        <p>\\(x = -6\\)</p>
+                                        <p>The x-intercept is the point \\((-6,0)\\).</p>
+                                        <p>Step 2: Find the y-intercept. Set \\(x=0\\) in the equation \\(2x+4y=-12\\).</p>
+                                        <p>\\(2(0) + 4y = -12\\)</p>
+                                        <p>\\(4y = -12\\)</p>
+                                        <p>\\(y = -3\\)</p>
+                                        <p>The y-intercept is the point \\((0,-3)\\).</p>
+                                        <p>Step 3: Find the midpoint between the x-intercept \\((-6,0)\\) and the y-intercept \\((0,-3)\\).</p>
+                                        <p>Let \\((x_1, y_1) = (-6,0)\\) and \\((x_2, y_2) = (0,-3)\\).</p>
+                                        <p>Using the midpoint formula \\(M = (\\frac{x_1+x_2}{2}, \\frac{y_1+y_2}{2})\\):</p>
+                                        <p>\\(M = (\\frac{-6+0}{2}, \\frac{0+(-3)}{2})\\)</p>
+                                        <p>\\(M = (\\frac{-6}{2}, \\frac{-3}{2})\\)</p>
+                                        <p>\\(M = (-3, -\\frac{3}{2})\\)</p>
+                                        <p><strong>Final Answer:</strong> \\((-3, -\\frac{3}{2})\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            { 
+                id: "quiz5",
+                title: "Quiz 5", 
+                contentHTML: function() {
+                     return `
+                        <div class="assignment-document">
+                            <h2>Quiz 5 :: Equation System Diagnostics</h2>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 1: Solve Linear Equation</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Solve the following equation for x: \\(4(x-1)-3(1-x)=10(x+2)\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution Steps:</strong></p>
+                                        <p>1. Distribute the numbers into the parentheses:</p>
+                                        <p>\\(4(x) + 4(-1) - 3(1) - 3(-x) = 10(x) + 10(2)\\)</p>
+                                        <p>\\(4x - 4 - 3 + 3x = 10x + 20\\)</p>
+                                        <p>2. Combine like terms on the left side of the equation:</p>
+                                        <p>\\((4x + 3x) + (-4 - 3) = 10x + 20\\)</p>
+                                        <p>\\(7x - 7 = 10x + 20\\)</p>
+                                        <p>3. Move all x terms to one side and constant terms to the other. Subtract \\(7x\\) from both sides:</p>
+                                        <p>\\(-7 = 10x - 7x + 20\\)</p>
+                                        <p>\\(-7 = 3x + 20\\)</p>
+                                        <p>4. Subtract 20 from both sides:</p>
+                                        <p>\\(-7 - 20 = 3x\\)</p>
+                                        <p>\\(-27 = 3x\\)</p>
+                                        <p>5. Divide by 3 to solve for x:</p>
+                                        <p>\\(x = \\frac{-27}{3}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(x = -9\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Problem 2: Solve Rational Equation</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Solve the following equation for x: \\(\\frac{2}{x-1} + \\frac{3}{2} = \\frac{5}{2(x-1)} + 2\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution Steps:</strong></p>
+                                        <p>1. Identify excluded values for x. The denominators cannot be zero.</p>
+                                        <p>\\(x-1 \\neq 0 \\Rightarrow x \\neq 1\\)</p>
+                                        <p>\\(2(x-1) \\neq 0 \\Rightarrow x \\neq 1\\)</p>
+                                        <p>So, \\(x \\neq 1\\).</p>
+                                        <p>2. Find the Least Common Denominator (LCD) of all terms. The denominators are \\((x-1)\\), 2, and \\(2(x-1)\\). The term 2 can be written as \\(\\frac{2}{1}\\).</p>
+                                        <p>The LCD is \\(2(x-1)\\).</p>
+                                        <p>3. Multiply every term in the equation by the LCD, \\(2(x-1)\\), to clear the fractions:</p>
+                                        <p>\\(2(x-1) \\cdot \\frac{2}{x-1} + 2(x-1) \\cdot \\frac{3}{2} = 2(x-1) \\cdot \\frac{5}{2(x-1)} + 2(x-1) \\cdot 2\\)</p>
+                                        <p>4. Simplify each term after multiplication:</p>
+                                        <p>First term: \\(2 \\cdot 2 = 4\\)</p>
+                                        <p>Second term: \\((x-1) \cdot 3 = 3(x-1)\\)</p>
+                                        <p>Third term: \\(1 \cdot 5 = 5\\)</p>
+                                        <p>Fourth term: \\(4(x-1)\\)</p>
+                                        <p>The equation becomes: \\(4 + 3(x-1) = 5 + 4(x-1)\\)</p>
+                                        <p>5. Distribute the numbers into the parentheses:</p>
+                                        <p>\\(4 + 3x - 3 = 5 + 4x - 4\\)</p>
+                                        <p>6. Combine like terms on each side of the equation:</p>
+                                        <p>\\((4-3) + 3x = (5-4) + 4x\\)</p>
+                                        <p>\\(1 + 3x = 1 + 4x\\)</p>
+                                        <p>7. Isolate x. Subtract \\(3x\\) from both sides:</p>
+                                        <p>\\(1 = 1 + 4x - 3x\\)</p>
+                                        <p>\\(1 = 1 + x\\)</p>
+                                        <p>8. Subtract 1 from both sides:</p>
+                                        <p>\\(1 - 1 = x\\)</p>
+                                        <p>\\(0 = x\\)</p>
+                                        <p>The solution \\(x=0\\) does not violate the restriction \\(x \\neq 1\\).</p>
+                                        <p><strong>Final Answer:</strong> \\(x = 0\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            },
+            { 
+                id: "quiz6",
+                title: "Quiz 6", 
+                contentHTML: function() {
+                     return `
+                        <div class="assignment-document">
+                            <h2>Quiz 6 :: Quadratic & Rational Equation Solutions</h2>
+                            <div class="collapsible-section color-1">
+                                <div class="collapsible-header">Problem 1: Solve Quadratic Equation</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Solve the following equation for x. Be sure to show every step. \\(x^{2}-9x=10\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Rearrange the equation into standard quadratic form \\(ax^2+bx+c=0\\).</p>
+                                        <p>\\(x^2-9x-10=0\\)</p>
+                                        <p>Step 2: Factor the quadratic expression. We need two numbers that multiply to -10 (the constant term) and add to -9 (the coefficient of the x term).</p>
+                                        <p>The pairs of factors for -10 are: (1, -10), (-1, 10), (2, -5), (-2, 5).</p>
+                                        <p>Check their sums: 1+(-10)=-9. This is the pair we need: 1 and -10.</p>
+                                        <p>So, the factored form is \\((x+1)(x-10)=0\\).</p>
+                                        <p>Step 3: Set each factor equal to zero and solve for x (Zero Product Property).</p>
+                                        <p>\\(x+1=0 \\Rightarrow x=-1\\)</p>
+                                        <p>\\(x-10=0 \\Rightarrow x=10\\)</p>
+                                        <p><strong>Final Answer:</strong> The solutions are \\(x=-1\\) and \\(x=10\\).</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-2">
+                                <div class="collapsible-header">Problem 2: Solve Rational Equation</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Solve the following equation for x. Be sure to show every step. \\(1+\\frac{6}{x^2}=\\frac{5}{x}\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>Step 1: Note the restriction on x. Since x is in the denominator, \\(x \\neq 0\\).</p>
+                                        <p>Step 2: To eliminate the fractions, multiply every term in the equation by the Least Common Denominator (LCD). The denominators are \\(x^2\\) and \\(x\\). The LCD is \\(x^2\\).</p>
+                                        <p>\\(x^2(1) + x^2(\\frac{6}{x^2}) = x^2(\\frac{5}{x})\\)</p>
+                                        <p>Step 3: Simplify each term after multiplication.</p>
+                                        <p>\\(x^2 + 6 = 5x\\)</p>
+                                        <p>Step 4: Rearrange the equation into standard quadratic form \\(ax^2+bx+c=0\\).</p>
+                                        <p>\\(x^2 - 5x + 6 = 0\\)</p>
+                                        <p>Step 5: Factor the quadratic expression. We need two numbers that multiply to 6 and add to -5. These numbers are -2 and -3.</p>
+                                        <p>So, the factored form is \\((x-2)(x-3)=0\\).</p>
+                                        <p>Step 6: Set each factor equal to zero and solve for x.</p>
+                                        <p>\\(x-2=0 \\Rightarrow x=2\\)</p>
+                                        <p>\\(x-3=0 \\Rightarrow x=3\\)</p>
+                                        <p>Both solutions \\(x=2\\) and \\(x=3\\) are valid as they do not violate the restriction \\(x \\neq 0\\).</p>
+                                        <p><strong>Final Answer:</strong> The solutions are \\(x=2\\) and \\(x=3\\).</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapsible-section color-3">
+                                <div class="collapsible-header">Problem 3: Solve using Quadratic Formula</div>
+                                <div class="collapsible-content">
+                                    <p><strong>Question:</strong> Solve the following equation for x using the quadratic formula. You do not need to simplify your final answer. \\(2x^2-5x-6=0\\)</p>
+                                    <div class="solution">
+                                        <p><strong>Solution:</strong></p>
+                                        <p>The quadratic equation is given in the form \\(ax^2+bx+c=0\\), where:</p>
+                                        <p>\\(a=2\\)</p>
+                                        <p>\\(b=-5\\)</p>
+                                        <p>\\(c=-6\\)</p>
+                                        <p>The quadratic formula is \\(x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}\\).</p>
+                                        <p>Substitute the values of a, b, and c into the formula:</p>
+                                        <p>\\(x = \\frac{-(-5) \\pm \\sqrt{(-5)^2-4(2)(-6)}}{2(2)}\\)</p>
+                                        <p>\\(x = \\frac{5 \\pm \\sqrt{25 - (-48)}}{4}\\)</p>
+                                        <p>\\(x = \\frac{5 \\pm \\sqrt{25 + 48}}{4}\\)</p>
+                                        <p>\\(x = \\frac{5 \\pm \\sqrt{73}}{4}\\)</p>
+                                        <p>As requested, the final answer does not need further simplification. The two solutions are:</p>
+                                        <p>\\(x_1 = \\frac{5 + \\sqrt{73}}{4}\\)</p>
+                                        <p>\\(x_2 = \\frac{5 - \\sqrt{73}}{4}\\)</p>
+                                        <p><strong>Final Answer:</strong> \\(x = \\frac{5 \\pm \\sqrt{73}}{4}\\)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        ];
+
+        let currentAssignments = [...assignmentsData];
+        let currentIndex = 0;
+        const carousel = document.getElementById('assignmentCarousel');
+        const assignmentContentDiv = document.getElementById('assignment-content');
+        const homeButton = document.getElementById('homeButton');
+        const pathDisplay = document.getElementById('pathDisplay');
+        const messageArea = document.getElementById('messageArea');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        
+        const bootSequenceDiv = document.getElementById('boot-sequence');
+        const bootTextDiv = document.getElementById('boot-text');
+        const containerDiv = document.querySelector('.container');
+        const bootLines = [
+            "INIT TERMINAL_MATH XQ v2.3...", // Shortened
+            "SYS CHK: OK.", // Shortened
+            "MODULES: EX1,HW2,HW4-6,QZ4-6...", // Shortened
+            "SOLUTIONS_VERIFIED [SIGMA-7]", // More "tech"
+            "GFX_ENGINE::BLUE_SYNC [ACTIVE]", // Shortened
+            "ANOM_DETECT: ONLINE.", // Shortened
+            "OPERATOR_AUTH. SYSTEM READY.", // Shortened
+        ];
+        let lineIndex = 0;
+        let charIndex = 0;
+        let activeCharts = {}; 
+
+        function typeBootText() {
+            if (lineIndex < bootLines.length) {
+                if (charIndex < bootLines[lineIndex].length) {
+                    bootTextDiv.innerHTML += bootLines[lineIndex].charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeBootText, 5); // Very fast character typing
+                } else {
+                    bootTextDiv.innerHTML += '\n';
+                    lineIndex++;
+                    charIndex = 0;
+                    setTimeout(typeBootText, 20); // Short delay between lines
+                }
+            } else {
+                // All lines typed, now proceed to fade out and show content
+                setTimeout(() => {
+                    bootSequenceDiv.style.opacity = 0; // Start fade out
+                    setTimeout(() => {
+                        bootSequenceDiv.style.display = 'none'; // Hide after fade
+                        containerDiv.style.display = 'flex'; // Show main content
+                        checkUrlParams(); // Initialize carousel and content
+                    }, 250); // Duration of fade out (must match CSS transition)
+                }, 50); // Short delay after text is fully typed
+            }
+        }
+
+        function renderCarousel() {
+            carousel.innerHTML = '';
+            currentAssignments.forEach((assignment, index) => {
+                const item = document.createElement('div');
+                item.classList.add('carousel-item');
+                item.dataset.index = index;
+                item.dataset.assignmentId = assignment.id;
+                item.dataset.title = assignment.title; 
+
+                const titleElement = document.createElement('h3');
+                titleElement.textContent = assignment.title; 
+                item.appendChild(titleElement);
+
+                const shareButton = document.createElement('button');
+                shareButton.classList.add('share-button');
+                shareButton.textContent = 'SHARE_LINK';
+                shareButton.onclick = (e) => {
+                    e.stopPropagation();
+                    const link = `${window.location.origin}${window.location.pathname}?assignment=${encodeURIComponent(assignment.id)}`;
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(link).then(() => {
+                            showTemporaryMessage(`LINK FOR ${assignment.title} COPIED!`);
+                        }).catch(err => {
+                            console.warn('Async clipboard copy failed:', err);
+                            fallbackCopyTextToClipboard(link, assignment.title);
+                        });
+                    } else {
+                        fallbackCopyTextToClipboard(link, assignment.title);
+                    }
+                };
+                item.appendChild(shareButton);
+
+                item.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateCarousel();
+                    loadAssignmentContent(assignment.id);
+                });
+                carousel.appendChild(item);
+            });
+            updateCarousel();
+            if (currentAssignments.length > 0) {
+                 loadAssignmentContent(currentAssignments[currentIndex].id);
+            } else {
+                 loadAssignmentContent(null); 
+            }
+        }
+        
+        function fallbackCopyTextToClipboard(text, title) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed"; textArea.style.top = "0"; textArea.style.left = "0";
+            textArea.style.width = "2em"; textArea.style.height = "2em"; textArea.style.padding = "0";
+            textArea.style.border = "none"; textArea.style.outline = "none"; textArea.style.boxShadow = "none";
+            textArea.style.background = "transparent";
+            document.body.appendChild(textArea);
+            textArea.focus(); textArea.select();
+            try {
+                document.execCommand('copy');
+                showTemporaryMessage(`LINK FOR ${title} COPIED! (fallback)`);
+            } catch (err) {
+                showTemporaryMessage('FAILED TO COPY LINK.');
+                console.error('Fallback copy failed', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function updateCarousel() {
+            const items = carousel.children;
+            if (items.length === 0) return;
+
+            const radius = items.length > 1 ? Math.min(carousel.offsetWidth / 3.2, 200) : 0; 
+
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                const itemIndex = parseInt(item.dataset.index);
+                let relativeIndex = itemIndex - currentIndex;
+
+                if (items.length > 1) {
+                    if (relativeIndex > items.length / 2) relativeIndex -= items.length;
+                    else if (relativeIndex < -items.length / 2) relativeIndex += items.length;
+                } else {
+                    relativeIndex = 0; 
+                }
+
+                const angleDeg = relativeIndex * (360 / Math.max(items.length, 7)); 
+                const angleRad = angleDeg * Math.PI / 180;
+                const x = radius * Math.sin(angleRad);
+                const zDepth = radius * (Math.cos(angleRad) -1); 
+                const distanceFactor = Math.abs(relativeIndex) / (items.length > 1 ? (items.length / 2) : 1);
+                let scale = 1 - distanceFactor * 0.45; 
+                let opacity = 1 - distanceFactor * 0.65; 
+                
+                scale = Math.max(scale, 0.35); 
+                opacity = Math.max(opacity, 0.25); 
+
+                if (itemIndex === currentIndex) { 
+                    item.classList.add('active');
+                    item.style.transform = `translateY(-50%) translateX(-50%) translateZ(80px) scale(1.2) rotateY(0deg)`;
+                    item.style.opacity = 1;
+                    item.style.zIndex = items.length + 1; 
+                } else { 
+                    item.classList.remove('active');
+                    item.style.transform = `translateY(-50%) translateX(-50%) translateX(${x}px) translateZ(${zDepth}px) rotateY(${angleDeg}deg) scale(${scale})`;
+                    item.style.opacity = opacity;
+                    item.style.zIndex = items.length - Math.abs(relativeIndex);
+                }
+            }
+            if (items.length === 1) {
+                items[0].style.transform = 'translateY(-50%) translateX(-50%) translateZ(0px) scale(1.1)';
+                items[0].style.opacity = 1;
+                items[0].classList.add('active');
+                items[0].style.zIndex = items.length + 1;
+            }
+        }
+        
+        function destroyActiveCharts() {
+            for (const chartId in activeCharts) {
+                if (activeCharts[chartId] instanceof Chart) { 
+                    activeCharts[chartId].destroy();
+                }
+                delete activeCharts[chartId]; 
+            }
+        }
+
+        function loadAssignmentContent(assignmentId) {
+            destroyActiveCharts(); 
+            const assignment = currentAssignments.find(a => a.id === assignmentId);
+            if (assignment) {
+                assignmentContentDiv.innerHTML = assignment.contentHTML();
+                pathDisplay.textContent = `PATH: /assignments/${assignment.title}`;
+                
+                const collapsibles = assignmentContentDiv.querySelectorAll('.collapsible-header');
+                collapsibles.forEach(header => {
+                    header.addEventListener('click', function() {
+                        this.parentElement.classList.toggle('open');
+                        const content = this.nextElementSibling;
+                        if (content.style.display === "block") {
+                            content.style.display = "none";
+                        } else {
+                            content.style.display = "block";
+                        }
+                    });
+                });
+
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise([assignmentContentDiv])
+                        .then(() => {
+                            if (assignment.id === "hw6") {
+                                renderHomework6Charts();
+                            }
+                        })
+                        .catch((err) => console.error('MathJax typesetting error:', err));
+                } else if (window.MathJax) { 
+                     window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, assignmentContentDiv], () => {
+                         if (assignment.id === "hw6") {
+                             renderHomework6Charts();
+                         }
+                     });
+                }
+            } else {
+                assignmentContentDiv.innerHTML = `<div class="pdf-placeholder">SELECT AN ASSIGNMENT MODULE TO LOAD DATASTREAM...</div>`;
+                pathDisplay.textContent = `PATH: /assignments/`;
+            }
+        }
+
+        function showTemporaryMessage(message) {
+            messageArea.textContent = message;
+            messageArea.classList.add('visible');
+            setTimeout(() => {
+                messageArea.classList.remove('visible');
+            }, 3000);
+        }
+
+        function checkUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            const assignmentIdParam = params.get('assignment');
+            if (assignmentIdParam) {
+                const foundAssignment = assignmentsData.find(a => a.id === assignmentIdParam);
+                if (foundAssignment) {
+                    currentAssignments = [foundAssignment]; 
+                    currentIndex = 0;
+                    pathDisplay.textContent = `PATH: /assignments/${foundAssignment.title} (SHARED_LINK_ACTIVE)`;
+                } else {
+                    showTemporaryMessage("SHARED ASSIGNMENT NOT FOUND. DISPLAYING ALL.");
+                    currentAssignments = [...assignmentsData]; 
+                    pathDisplay.textContent = `PATH: /assignments/`;
+                }
+            } else {
+                currentAssignments = [...assignmentsData]; 
+                pathDisplay.textContent = `PATH: /assignments/`;
+            }
+            renderCarousel(); 
+        }
+
+        homeButton.addEventListener('click', () => {
+            const newUrl = window.location.origin + window.location.pathname;
+            window.history.pushState({path: newUrl}, '', newUrl); 
+            
+            currentAssignments = [...assignmentsData]; 
+            currentIndex = 0;
+            pathDisplay.textContent = `PATH: /assignments/`;
+            renderCarousel();
+            if (currentAssignments.length > 0) {
+                loadAssignmentContent(currentAssignments[0].id);
+            }
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentAssignments.length <= 1) return; 
+            currentIndex = (currentIndex - 1 + currentAssignments.length) % currentAssignments.length;
+            updateCarousel();
+            loadAssignmentContent(currentAssignments[currentIndex].id);
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentAssignments.length <= 1) return;
+            currentIndex = (currentIndex + 1) % currentAssignments.length;
+            updateCarousel();
+            loadAssignmentContent(currentAssignments[currentIndex].id);
+        });
+        
+        let isDown = false;
+        let startX;
+        
+        carousel.addEventListener('mousedown', (e) => {
+            if (currentAssignments.length <= 1) return; isDown = true; carousel.style.cursor = 'grabbing'; startX = e.pageX - carousel.offsetLeft;
+        });
+        carousel.addEventListener('mouseleave', () => { if (isDown) { isDown = false; carousel.style.cursor = 'grab';}});
+        carousel.addEventListener('mouseup', () => {if (isDown) { isDown = false; carousel.style.cursor = 'grab';}});
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDown || currentAssignments.length <= 1) return; e.preventDefault(); const x = e.pageX - carousel.offsetLeft; const walk = (x - startX);
+            if (Math.abs(walk) > 70) { 
+                if (walk < 0) { nextButton.click(); } else { prevButton.click(); } 
+                startX = x; 
+                isDown = false; 
+            }
+        });
+        carousel.addEventListener('touchstart', (e) => {
+            if (currentAssignments.length <= 1) return; isDown = true; startX = e.touches[0].pageX - carousel.offsetLeft;
+        }, { passive: true }); 
+        carousel.addEventListener('touchmove', (e) => {
+            if (!isDown || currentAssignments.length <= 1) return; 
+            const x = e.touches[0].pageX - carousel.offsetLeft; const walk = (x - startX);
+            if (Math.abs(walk) > 50) { 
+                if (walk < 0) { nextButton.click(); } else { prevButton.click(); } 
+                startX = x; 
+                isDown = false;
+            }
+        }, { passive: false }); 
+        carousel.addEventListener('touchend', () => { isDown = false; });
+
+        function renderHomework6Charts() {
+            const chartFontFamily = "'Share Tech Mono', monospace";
+            const terminalTextColor = getComputedStyle(document.documentElement).getPropertyValue('--terminal-text').trim();
+            const terminalAccentColor = getComputedStyle(document.documentElement).getPropertyValue('--terminal-accent').trim();
+            const terminalDimTextColor = getComputedStyle(document.documentElement).getPropertyValue('--terminal-dim-text').trim();
+            const gridColor = 'rgba(48, 200, 255, 0.1)'; // Adjusted for blue theme grid
+
+            const getChartOptions = (titleText, suggestedMinX, suggestedMaxX, suggestedMinY, suggestedMaxY) => ({
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 600, easing: 'easeOutQuart' },
+                plugins: {
+                    title: { display: true, text: titleText, color: terminalAccentColor, font: { family: "'VT323', monospace", size: 18, weight: 'normal' } },
+                    legend: { labels: { color: terminalTextColor, font: { family: chartFontFamily, size: 12 } } },
+                    tooltip: {
+                        backgroundColor: 'rgba(10, 15, 30, 0.85)', /* Adjusted for blue theme */
+                        titleFont: { family: chartFontFamily },
+                        bodyFont: { family: chartFontFamily },
+                        borderColor: terminalAccentColor,
+                        borderWidth: 1,
+                        titleColor: terminalAccentColor,
+                        bodyColor: terminalTextColor,
+                        padding: 10
+                    }
+                },
+                scales: {
+                    x: { 
+                        type: 'linear', position: 'bottom',
+                        grid: { color: gridColor, borderColor: terminalDimTextColor, drawBorder: true, lineWidth:0.5 },
+                        ticks: { color: terminalDimTextColor, font: { family: chartFontFamily, size: 10 } },
+                        title: { display: true, text: 'x-axis', color: terminalDimTextColor, font: { family: chartFontFamily } },
+                        suggestedMin: suggestedMinX, suggestedMax: suggestedMaxX
+                    },
+                    y: { 
+                        grid: { color: gridColor, borderColor: terminalDimTextColor, drawBorder: true, lineWidth:0.5 },
+                        ticks: { color: terminalDimTextColor, font: { family: chartFontFamily, size: 10 } },
+                        title: { display: true, text: 'y-axis', color: terminalDimTextColor, font: { family: chartFontFamily } },
+                        suggestedMin: suggestedMinY, suggestedMax: suggestedMaxY
+                    }
+                }
+            });
+            
+            const primaryLineColor = terminalAccentColor; 
+            const primaryFillColor = 'rgba(0, 255, 255, 0.15)'; 
+            const secondaryLineColor = terminalTextColor; 
+            const secondaryFillColor = 'rgba(48, 200, 255, 0.15)'; // Adjusted for blue theme
+
+            // Chart rendering functions (content remains the same, only colors/options might be affected by CSS vars)
+            // Problem S2P1: y = 0.5x + 3
+            const hw6s2p1Ctx = document.getElementById('hw6Sec2Prob1Chart')?.getContext('2d');
+            if (hw6s2p1Ctx) {
+                const dataS2P1 = []; for (let x = -7; x <= 1; x += 0.25) { dataS2P1.push({x: x, y: 0.5 * x + 3}); }
+                activeCharts['hw6Sec2Prob1Chart'] = new Chart(hw6s2p1Ctx, {
+                    type: 'line',
+                    data: { datasets: [{ label: 'y = 0.5x + 3', data: dataS2P1, borderColor: primaryLineColor, backgroundColor: primaryFillColor, tension: 0.1, pointBackgroundColor: primaryLineColor, pointBorderColor: primaryLineColor, pointRadius: 2, borderWidth: 2 }] },
+                    options: getChartOptions('Plot: y = 0.5x + 3', -7, 1, -1, 4)
+                });
+            }
+
+            // Problem S2P2: y = 2x - 3
+            const hw6s2p2Ctx = document.getElementById('hw6Sec2Prob2Chart')?.getContext('2d');
+            if (hw6s2p2Ctx) {
+                const dataS2P2 = []; for (let x = -1; x <= 3; x += 0.25) { dataS2P2.push({x: x, y: 2 * x - 3}); }
+                 activeCharts['hw6Sec2Prob2Chart'] = new Chart(hw6s2p2Ctx, {
+                    type: 'line',
+                    data: { datasets: [{ label: 'y = 2x - 3', data: dataS2P2, borderColor: secondaryLineColor, backgroundColor: secondaryFillColor, tension: 0.1, pointBackgroundColor: secondaryLineColor, pointBorderColor: secondaryLineColor, pointRadius: 2, borderWidth: 2 }] },
+                    options: getChartOptions('Plot: y = 2x - 3', -1, 3, -5, 3)
+                });
+            }
+
+            // Problem S3P1: y = -2x^2 + 3
+            const hw6s3p1Ctx = document.getElementById('hw6Sec3Prob1Chart')?.getContext('2d');
+            if (hw6s3p1Ctx) {
+                const dataS3P1 = []; for (let x = -2; x <= 2; x += 0.1) { dataS3P1.push({x: x, y: -2 * x * x + 3}); }
+                activeCharts['hw6Sec3Prob1Chart'] = new Chart(hw6s3p1Ctx, {
+                    type: 'line',
+                    data: { datasets: [{ label: 'y = -2x^2 + 3', data: dataS3P1, borderColor: primaryLineColor, backgroundColor: primaryFillColor, tension: 0.1, pointRadius: 0, borderWidth: 2 }] },
+                    options: getChartOptions('Plot: y = -2x^2 + 3', -2, 2, -5, 4)
+                });
+            }
+            
+            // Problem S3P2: y = -2x + 3
+            const hw6s3p2Ctx = document.getElementById('hw6Sec3Prob2Chart')?.getContext('2d');
+            if (hw6s3p2Ctx) {
+                const dataS3P2 = []; for (let x = -1; x <= 3; x += 0.25) { dataS3P2.push({x: x, y: -2 * x + 3}); }
+                activeCharts['hw6Sec3Prob2Chart'] = new Chart(hw6s3p2Ctx, {
+                    type: 'line',
+                    data: { datasets: [{ label: 'y = -2x + 3', data: dataS3P2, borderColor: secondaryLineColor, backgroundColor: secondaryFillColor, tension: 0.1, pointBackgroundColor: secondaryLineColor, pointBorderColor: secondaryLineColor, pointRadius: 2, borderWidth: 2 }] },
+                    options: getChartOptions('Plot: y = -2x + 3', -1, 3, -3, 5)
+                });
+            }
+
+            // Problem S3P3: y = x^2 - 1
+            const hw6s3p3Ctx = document.getElementById('hw6Sec3Prob3Chart')?.getContext('2d');
+            if (hw6s3p3Ctx) {
+                const dataS3P3 = []; for (let x = -2.5; x <= 2.5; x += 0.1) { dataS3P3.push({x: x, y: x * x - 1}); }
+                activeCharts['hw6Sec3Prob3Chart'] = new Chart(hw6s3p3Ctx, {
+                    type: 'line',
+                    data: { datasets: [{ label: 'y = x^2 - 1', data: dataS3P3, borderColor: primaryLineColor, backgroundColor: primaryFillColor, tension: 0.1, pointRadius: 0, borderWidth: 2 }] },
+                    options: getChartOptions('Plot: y = x^2 - 1', -2.5, 2.5, -2, 6)
+                });
+            }
+
+            // Problem S3P4: y = 2/x
+            const hw6s3p4Ctx = document.getElementById('hw6Sec3Prob4Chart')?.getContext('2d');
+            if (hw6s3p4Ctx) {
+                const dataS3P4_branch1 = []; const dataS3P4_branch2 = [];
+                const range = 4; const step = 0.05; const epsilon = 0.01; 
+                for (let x = -range; x <= -epsilon; x += step) { dataS3P4_branch1.push({x: x, y: 2 / x}); }
+                for (let x = epsilon; x <= range; x += step) { dataS3P4_branch2.push({x: x, y: 2 / x}); }
+                activeCharts['hw6Sec3Prob4Chart'] = new Chart(hw6s3p4Ctx, {
+                    type: 'scatter', 
+                    data: {
+                        datasets: [
+                            { label: 'y = 2/x (x < 0)', data: dataS3P4_branch1, borderColor: primaryLineColor, backgroundColor: primaryFillColor, showLine: true, tension: 0.1, pointRadius: 0, borderWidth: 2 },
+                            { label: 'y = 2/x (x > 0)', data: dataS3P4_branch2, borderColor: primaryLineColor, backgroundColor: primaryFillColor, showLine: true, tension: 0.1, pointRadius: 0, borderWidth: 2 }
+                        ]
+                    },
+                    options: getChartOptions('Plot: y = 2/x', -range, range, -5, 5)
+                });
+            }
+
+            // Problem S3P5: y = 0.5x + 2
+            const hw6s3p5Ctx = document.getElementById('hw6Sec3Prob5Chart')?.getContext('2d');
+            if (hw6s3p5Ctx) {
+                const dataS3P5 = []; for (let x = -5; x <= 1; x += 0.25) { dataS3P5.push({x: x, y: 0.5 * x + 2}); }
+                activeCharts['hw6Sec3Prob5Chart'] = new Chart(hw6s3p5Ctx, {
+                    type: 'line',
+                    data: { datasets: [{ label: 'y = 0.5x + 2', data: dataS3P5, borderColor: secondaryLineColor, backgroundColor: secondaryFillColor, tension: 0.1, pointBackgroundColor: secondaryLineColor, pointBorderColor: secondaryLineColor, pointRadius: 2, borderWidth: 2 }] },
+                    options: getChartOptions('Plot: y = 0.5x + 2', -5, 1, -1, 3)
+                });
+            }
+        }
+
+        window.addEventListener('load', () => {
+            typeBootText(); 
+        });
+        
+        window.addEventListener('resize', () => {
+             if (containerDiv.style.display !== 'none') { 
+                updateCarousel(); 
+                const currentLoadedAssignment = currentAssignments[currentIndex];
+                if (currentLoadedAssignment && currentLoadedAssignment.id === "hw6") {
+                    setTimeout(() => { 
+                        destroyActiveCharts();
+                        renderHomework6Charts();
+                    }, 250);
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
