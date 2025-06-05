@@ -1922,7 +1922,7 @@
             "MODULES: EX1,HW2,HW4-6,QZ4-6...",
             "SOLUTIONS_VERIFIED [SIGMA-7]", 
             "GFX_ENGINE::BLUE_SYNC [ACTIVE]", 
-            "COLOR_PALETTE_MUTATOR::STANDBY", // New boot line
+            "COLOR_PALETTE_MUTATOR::STANDBY", 
             "ANOM_DETECT: ONLINE.",
             "OPERATOR_AUTH. SYSTEM READY.",
         ];
@@ -1963,13 +1963,12 @@
                         bootSequenceDiv.style.display = 'none'; 
                         containerDiv.style.display = 'flex'; 
                         checkUrlParams(); 
-                        applyMutedColorsPreference(); // Apply muted preference after content is shown
+                        applyMutedColorsPreference(); 
                     }, 250); 
                 }, 50); 
             }
         }
         
-        // Function to apply muted colors preference from localStorage
         function applyMutedColorsPreference() {
             const mutedEnabled = localStorage.getItem('mutedColorsEnabled') === 'true';
             if (mutedEnabled) {
@@ -1979,7 +1978,6 @@
                 bodyElement.classList.remove('muted-colors-active');
                 muteColorsButton.textContent = 'C:\\> MUTE_COLORS';
             }
-            // Re-render charts if HW6 is active, after a short delay for styles to apply
             setTimeout(() => {
                 const currentLoadedAssignment = currentAssignments[currentIndex];
                 if (currentLoadedAssignment && currentLoadedAssignment.id === "hw6" && containerDiv.style.display !== 'none') {
@@ -1989,7 +1987,6 @@
             }, 100);
         }
 
-        // Event listener for the mute colors button
         muteColorsButton.addEventListener('click', () => {
             const isMuted = bodyElement.classList.toggle('muted-colors-active');
             localStorage.setItem('mutedColorsEnabled', isMuted);
@@ -1998,7 +1995,6 @@
             } else {
                 muteColorsButton.textContent = 'C:\\> MUTE_COLORS';
             }
-            // Re-render charts after theme change, after a short delay
              setTimeout(() => {
                 const currentLoadedAssignment = currentAssignments[currentIndex];
                 if (currentLoadedAssignment && currentLoadedAssignment.id === "hw6" && containerDiv.style.display !== 'none') {
@@ -2052,9 +2048,9 @@
                 carousel.appendChild(item);
             });
             updateCarousel();
-            if (currentAssignments.length > 0 && currentAssignments[currentIndex]) { // Check if currentIndex is valid
+            if (currentAssignments.length > 0 && currentAssignments[currentIndex]) { 
                  loadAssignmentContent(currentAssignments[currentIndex].id);
-            } else if (currentAssignments.length > 0) { // Fallback to first item if currentIndex is out of bounds
+            } else if (currentAssignments.length > 0) { 
                  currentIndex = 0;
                  loadAssignmentContent(currentAssignments[0].id);
             } else {
@@ -2143,7 +2139,7 @@
                     });
                 });
 
-                toggleAllTabs(allTabsOpen); // Maintain current global tab state or default to closed
+                toggleAllTabs(allTabsOpen);
 
                 if (window.MathJax && window.MathJax.typesetPromise) {
                     window.MathJax.typesetPromise([assignmentContentDiv])
@@ -2174,12 +2170,11 @@
             if (forceState !== null) {
                 targetState = forceState;
             } else {
-                 // If not forcing, toggle based on whether *any* are open. If any open, close all. If all closed, open all.
                 const anyOpen = Array.from(collapsibleSections).some(section => section.classList.contains('open'));
                 targetState = !anyOpen;
             }
             
-            allTabsOpen = targetState; // Update global state
+            allTabsOpen = targetState; 
 
             collapsibleSections.forEach(section => {
                 const content = section.querySelector('.collapsible-content');
@@ -2202,7 +2197,7 @@
             }, 3000);
         }
         
-        function fallbackCopyTextToClipboard(text, title) { /* Keep this function as is */
+        function fallbackCopyTextToClipboard(text, title) { 
             const textArea = document.createElement("textarea");
             textArea.value = text;
             textArea.style.position = "fixed"; textArea.style.top = "0"; textArea.style.left = "0";
@@ -2240,7 +2235,7 @@
                 currentAssignments = [...assignmentsData]; 
                 pathDisplay.textContent = `PATH: /assignments/`;
             }
-            allTabsOpen = false; // Reset tab state when loading new set of assignments
+            allTabsOpen = false; 
             renderCarousel(); 
         }
 
@@ -2251,7 +2246,7 @@
             currentAssignments = [...assignmentsData]; 
             currentIndex = 0;
             pathDisplay.textContent = `PATH: /assignments/`;
-            allTabsOpen = false; // Reset tab state on home
+            allTabsOpen = false; 
             renderCarousel();
              if (currentAssignments.length > 0 && currentAssignments[currentIndex]) {
                 loadAssignmentContent(currentAssignments[currentIndex].id);
@@ -2279,16 +2274,16 @@
         let isDown = false;
         let startX;
         
-        carousel.addEventListener('mousedown', (e) => { /* Keep this function as is */
+        carousel.addEventListener('mousedown', (e) => { 
             if (currentAssignments.length <= 1) return; isDown = true; carousel.style.cursor = 'grabbing'; startX = e.pageX - carousel.offsetLeft;
         });
-        carousel.addEventListener('mouseleave', () => { /* Keep this function as is */
+        carousel.addEventListener('mouseleave', () => { 
             if (isDown) { isDown = false; carousel.style.cursor = 'grab';}
         });
-        carousel.addEventListener('mouseup', () => { /* Keep this function as is */
+        carousel.addEventListener('mouseup', () => { 
             if (isDown) { isDown = false; carousel.style.cursor = 'grab';}
         });
-        carousel.addEventListener('mousemove', (e) => { /* Keep this function as is */
+        carousel.addEventListener('mousemove', (e) => { 
             if (!isDown || currentAssignments.length <= 1) return; e.preventDefault(); const x = e.pageX - carousel.offsetLeft; const walk = (x - startX);
             if (Math.abs(walk) > 70) { 
                 if (walk < 0) { nextButton.click(); } else { prevButton.click(); } 
@@ -2296,10 +2291,10 @@
                 isDown = false; 
             }
         });
-        carousel.addEventListener('touchstart', (e) => { /* Keep this function as is */
+        carousel.addEventListener('touchstart', (e) => { 
             if (currentAssignments.length <= 1) return; isDown = true; startX = e.touches[0].pageX - carousel.offsetLeft;
         }, { passive: true }); 
-        carousel.addEventListener('touchmove', (e) => { /* Keep this function as is */
+        carousel.addEventListener('touchmove', (e) => { 
             if (!isDown || currentAssignments.length <= 1) return; 
             const x = e.touches[0].pageX - carousel.offsetLeft; const walk = (x - startX);
             if (Math.abs(walk) > 50) { 
@@ -2308,18 +2303,16 @@
                 isDown = false;
             }
         }, { passive: false }); 
-        carousel.addEventListener('touchend', () => { /* Keep this function as is */
+        carousel.addEventListener('touchend', () => { 
             isDown = false; 
         });
 
         function renderHomework6Charts() {
-            // Retrieve current theme colors using CSS variables
-            // This ensures charts use the correct colors whether in normal or muted mode
             const chartFontFamily = "'Share Tech Mono', monospace";
             const terminalTextColor = getComputedStyle(document.documentElement).getPropertyValue('--terminal-text').trim();
             const terminalAccentColor = getComputedStyle(document.documentElement).getPropertyValue('--terminal-accent').trim();
             const terminalDimTextColor = getComputedStyle(document.documentElement).getPropertyValue('--terminal-dim-text').trim();
-            const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--glow-color').trim().replace('0.4', '0.1'); // Use glow color with less alpha
+            const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--glow-color').trim().replace('0.4', '0.1'); 
 
             const getChartOptions = (titleText, suggestedMinX, suggestedMaxX, suggestedMinY, suggestedMaxY) => ({
                 responsive: true,
@@ -2329,7 +2322,7 @@
                     title: { display: true, text: titleText, color: terminalAccentColor, font: { family: "'VT323', monospace", size: 18, weight: 'normal' } },
                     legend: { labels: { color: terminalTextColor, font: { family: chartFontFamily, size: 12 } } },
                     tooltip: {
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--terminal-bg').trim() + 'E6', // terminal-bg with alpha
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--terminal-bg').trim() + 'E6', 
                         titleFont: { family: chartFontFamily },
                         bodyFont: { family: chartFontFamily },
                         borderColor: terminalAccentColor,
@@ -2356,14 +2349,12 @@
                 }
             });
             
-            // Use current theme's accent and text colors for lines
             const primaryLineColor = terminalAccentColor; 
-            const primaryFillColor = terminalAccentColor.slice(0, -1) + ', 0.15)'; // Accent with alpha
+            const primaryFillColor = terminalAccentColor.slice(0, -1) + ', 0.15)'; 
             const secondaryLineColor = terminalTextColor; 
-            const secondaryFillColor = terminalTextColor.slice(0,-1) + ', 0.15)'; // Text with alpha
+            const secondaryFillColor = terminalTextColor.slice(0,-1) + ', 0.15)'; 
 
 
-            // Chart rendering functions 
             const hw6s2p1Ctx = document.getElementById('hw6Sec2Prob1Chart')?.getContext('2d');
             if (hw6s2p1Ctx) {
                 const dataS2P1 = []; for (let x = -7; x <= 1; x += 0.25) { dataS2P1.push({x: x, y: 0.5 * x + 3}); }
@@ -2444,6 +2435,11 @@
         }
 
         window.addEventListener('load', () => {
+            // Set muted theme as default if no preference is stored yet
+            if (localStorage.getItem('mutedColorsEnabled') === null) {
+                localStorage.setItem('mutedColorsEnabled', 'true');
+            }
+
             const hasPlayedOnceKey = 'math125_v3_hasBootAnimationPlayedOnce';
             const noShowStreakKey = 'math125_v3_animationNoShowStreak';
 
@@ -2480,7 +2476,7 @@
                 bootSequenceDiv.style.opacity = 0; bootSequenceDiv.style.display = 'none';
                 containerDiv.style.display = 'flex';
                 checkUrlParams(); 
-                applyMutedColorsPreference(); // Apply muted preference after content is shown
+                applyMutedColorsPreference(); 
             }
         });
         
@@ -2492,7 +2488,7 @@
                     setTimeout(() => { 
                         destroyActiveCharts();
                         renderHomework6Charts();
-                    }, 150); // Slightly shorter delay
+                    }, 150); 
                 }
             }
         });
